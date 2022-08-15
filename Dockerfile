@@ -21,6 +21,8 @@ RUN npm install --force
 COPY . .
 
 # Build the app to the /dist folder
+ENV NODE_OPTIONS=--max_old_space_size=1024
+
 RUN npm run build
 
 
@@ -38,9 +40,11 @@ ENV NODE_ENV=${NODE_ENV}
 WORKDIR /oneLab/src/app
 
 # Copy all from development stage
-COPY --from=development /app/src/app/ .
+COPY --from=development /oneLab/src/app/ .
 
 EXPOSE 8080
+
+RUN mkdir -p /oneLab/src/app/dist/static
 
 # Run app
 CMD [ "node", "dist/main" ]
