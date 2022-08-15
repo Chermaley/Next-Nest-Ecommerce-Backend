@@ -38,7 +38,7 @@ ENV NODE_ENV=${NODE_ENV}
 WORKDIR /oneLab/src/app
 
 # Copy all from development stage
-COPY --from=development /thomas/src/app/ .
+COPY --from=development /app/src/app/ .
 
 EXPOSE 8080
 
