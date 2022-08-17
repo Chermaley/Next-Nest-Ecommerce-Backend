@@ -21,6 +21,7 @@ import { Resource, Database } from '@adminjs/sequelize';
 import AdminJS from 'adminjs';
 import * as path from 'path';
 import * as fs from 'fs';
+import { AuthService } from './auth/auth.service';
 
 AdminJS.registerAdapter({ Resource, Database });
 
@@ -49,52 +50,66 @@ if (!fs.existsSync(path.resolve(__dirname, '..', 'static'))) {
       autoLoadModels: true,
       sync: {},
     }),
-    AdminModule.createAdmin({
-      adminJsOptions: {
-        rootPath: '/admin',
-        resources: [
-          {
-            resource: Product,
-            options: {
-              properties: {
-                image: {
-                  isVisible: false,
+    AdminModule.createAdminAsync({
+      imports: [AuthModule],
+      inject: [AuthService],
+      useFactory: (authService: AuthService) => {
+        return {
+          auth: {
+            authenticate: async (email, password) =>
+              authService.loginAdmin({ email, password }),
+            cookieName: 'test',
+            cookiePassword: 'testPass',
+          },
+          adminJsOptions: {
+            rootPath: '/admin',
+            resources: [
+              {
+                resource: Product,
+                options: {
+                  properties: {
+                    image: {
+                      isVisible: false,
+                    },
+                  },
+                },
+                features: [
+                  uploadFeature({
+                    provider: {
+                      local: { bucket: path.join(__dirname, 'static') },
+                    },
+                    properties: {
+                      key: 'image',
+                    },
+                  }),
+                ],
+              },
+              { resource: ProductType, options: {} },
+            ],
+            locale: {
+              language: 'ru',
+              translations: {
+                labels: {
+                  products: 'Продукты',
+                  'product-types': 'Линейки',
+                  navigation: 'Навигация',
+                  dashboard: 'Панель управления',
+                },
+                buttons: {
+                  filter: 'Фильтр',
+                },
+                actions: {
+                  new: 'Создать',
+                  edit: 'Изменить',
+                  show: 'Показать',
+                  delete: 'Удалить',
+                  search: 'Поиск',
+                  bulkDelete: 'Удалить выбранное',
                 },
               },
             },
-            features: [
-              uploadFeature({
-                provider: { local: { bucket: path.join(__dirname, 'static') } },
-                properties: {
-                  key: 'image',
-                },
-              }),
-            ],
           },
-          { resource: ProductType, options: {} },
-        ],
-        locale: {
-          language: 'ru',
-          translations: {
-            labels: {
-              products: 'Продукты',
-              'product-types': 'Линейки',
-              navigation: 'Навигация',
-              dashboard: 'Панель управления',
-            },
-            buttons: {
-              filter: 'Фильтр',
-            },
-            actions: {
-              new: 'Создать',
-              edit: 'Изменить',
-              show: 'Показать',
-              delete: 'Удалить',
-              search: 'Поиск',
-              bulkDelete: 'Удалить выбранное',
-            },
-          },
-        },
+        };
       },
     }),
     UsersModule,

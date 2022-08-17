@@ -12,8 +12,21 @@ export class UsersService {
   ) {}
 
   async createUser(dto: CreateUserDto) {
+    const userList = await this.userRepository.findAll();
+    let role = await this.roleService.getRoleByValue('USER');
+    if (userList.length === 0) {
+      //Создание первых ролей
+      //Первый пользователь всегда админ
+      role = await this.roleService.createRole({
+        description: 'Администратор',
+        value: 'ADMIN',
+      });
+      await this.roleService.createRole({
+        description: 'Пользователь',
+        value: 'USER',
+      });
+    }
     const user = await this.userRepository.create(dto);
-    const role = await this.roleService.getRoleByValue('USER');
     await user.$set('roles', [role.id]);
     user.roles = [role];
     return user;

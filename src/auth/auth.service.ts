@@ -9,13 +9,30 @@ import { UsersService } from '../users/users.service';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcryptjs';
 import { User } from '../users/users.model';
+import { CurrentAdmin } from 'adminjs';
+import { RolesService } from '../roles/roles.service';
 
 @Injectable()
 export class AuthService {
   constructor(
     private userService: UsersService,
     private jwtService: JwtService,
+    private roleService: RolesService,
   ) {}
+
+  async loginAdmin(userDto: CreateUserDto): Promise<CurrentAdmin> {
+    try {
+      const user = await this.validateUser(userDto);
+      const adminRole = await this.roleService.getRoleByValue('ADMIN');
+      if (!user.roles.some((role) => role.value === adminRole.value))
+        return null;
+      return {
+        email: userDto.email,
+      };
+    } catch {
+      return null;
+    }
+  }
 
   async login(userDto: CreateUserDto) {
     const user = await this.validateUser(userDto);
@@ -47,15 +64,17 @@ export class AuthService {
 
   private async validateUser(userDto: CreateUserDto) {
     const user = await this.userService.getUserByEmail(userDto.email);
-    const passwordEquals = await bcrypt.compare(
-      userDto.password,
-      user.password,
-    );
-    if (user && passwordEquals) {
-      return user;
+    if (user) {
+      const passwordEquals = await bcrypt.compare(
+        userDto.password,
+        user.password,
+      );
+      if (user && passwordEquals) {
+        return user;
+      }
     }
     throw new UnauthorizedException({
-      message: 'Некорректный email или пароль.',
+      detail: 'Некорректный email или пароль.',
     });
   }
 }
