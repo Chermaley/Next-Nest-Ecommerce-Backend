@@ -49,12 +49,12 @@ AdminJS.registerAdapter({ Resource, Database });
       inject: [AuthService, FilesService],
       useFactory: (authService: AuthService, filesService: FilesService) => {
         return {
-          // auth: {
-          //   authenticate: async (email, password) =>
-          //     authService.loginAdmin({ email, password }),
-          //   cookieName: 'test',
-          //   cookiePassword: 'testPass',
-          // },
+          auth: {
+            authenticate: async (email, password) =>
+              authService.loginAdmin({ email, password }),
+            cookieName: 'test',
+            cookiePassword: 'testPass',
+          },
           adminJsOptions: {
             rootPath: '/admin',
             resources: [
