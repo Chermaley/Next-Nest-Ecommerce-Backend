@@ -30,8 +30,8 @@ const UploadPhoto: React.FC<BasePropertyProps> = (props) => {
   };
 
   return (
-    <Box style={{ marginBottom: 24 }}>
-      <Label>{property.label}</Label>
+    <Box>
+      <Label style={{ marginBottom: 15 }}>{property.label}</Label>
       <DropZone onChange={(files) => onUpload(files)} />
     </Box>
   );
