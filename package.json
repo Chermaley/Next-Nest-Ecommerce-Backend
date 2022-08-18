@@ -24,10 +24,12 @@
     "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "dependencies": {
+    "@adminjs/design-system": "^3.0.1",
     "@adminjs/express": "^5.0.0",
     "@adminjs/nestjs": "^5.0.0",
     "@adminjs/sequelize": "^3.0.0",
     "@adminjs/upload": "^3.0.0",
+    "@carbon/icons-react": "^10.49.0",
     "@nestjs/common": "^9.0.0",
     "@nestjs/config": "^2.2.0",
     "@nestjs/core": "^9.0.0",

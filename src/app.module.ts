@@ -28,7 +28,7 @@ AdminJS.registerAdapter({ Resource, Database });
   providers: [],
   imports: [
     ConfigModule.forRoot({
-      envFilePath: `.${process.env.NODE_ENV}.env`,
+      envFilePath: `.env`,
     }),
     ServeStaticModule.forRoot({
       rootPath: resolve(__dirname, '..', 'static'),
