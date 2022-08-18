@@ -3,6 +3,7 @@ import { InjectModel } from '@nestjs/sequelize';
 import { CreateUserDto } from './dto/create-user.dto';
 import { User } from './users.model';
 import { RolesService } from '../roles/roles.service';
+import { Role } from '../roles/roles.model';
 
 @Injectable()
 export class UsersService {
@@ -13,22 +14,23 @@ export class UsersService {
 
   async createUser(dto: CreateUserDto) {
     const userList = await this.userRepository.findAll();
-    let role = await this.roleService.getRoleByValue('USER');
+    const user = await this.userRepository.create(dto);
+    const roles: Role[] = [];
     if (userList.length === 0) {
-      //Создание первых ролей
-      //Первый пользователь всегда админ
-      role = await this.roleService.createRole({
+      const adminRole = await this.roleService.createRole({
         description: 'Администратор',
         value: 'ADMIN',
       });
+      roles.push(adminRole);
       await this.roleService.createRole({
         description: 'Пользователь',
         value: 'USER',
       });
     }
-    const user = await this.userRepository.create(dto);
-    await user.$set('roles', [role.id]);
-    user.roles = [role];
+    const userRole = await this.roleService.getRoleByValue('USER');
+    roles.push(userRole);
+    await user.$set('roles', [...roles]);
+    user.roles = roles;
     return user;
   }
 

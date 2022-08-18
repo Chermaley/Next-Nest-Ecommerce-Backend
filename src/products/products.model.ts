@@ -59,13 +59,31 @@ export class Product extends Model<Product, ProductCreationAttrs> {
   price: string;
 
   @ApiProperty({
-    example: 'Изображение продукта.',
+    example: 'Изображение продукта 1.',
     description: 'image.com',
   })
   @Column({
     type: DataType.STRING,
   })
-  image: string;
+  image1: string;
+
+  @ApiProperty({
+    example: 'Изображение продукта 2.',
+    description: 'image.com',
+  })
+  @Column({
+    type: DataType.STRING,
+  })
+  image2: string;
+
+  @ApiProperty({
+    example: 'Изображение продукта 3.',
+    description: 'image.com',
+  })
+  @Column({
+    type: DataType.STRING,
+  })
+  image3: string;
 
   @ForeignKey(() => ProductType)
   @Column({ type: DataType.INTEGER, allowNull: false })

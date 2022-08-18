@@ -15,19 +15,13 @@ import { AdminModule } from '@adminjs/nestjs';
 import { FilesModule } from './files/files.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { resolve } from 'path';
-import uploadFeature from '@adminjs/upload';
+import AdminJS, { flat } from 'adminjs';
 
-import { Resource, Database } from '@adminjs/sequelize';
-import AdminJS from 'adminjs';
-import * as path from 'path';
-import * as fs from 'fs';
+import { Database, Resource } from '@adminjs/sequelize';
 import { AuthService } from './auth/auth.service';
+import { FilesService } from './files/files.service';
 
 AdminJS.registerAdapter({ Resource, Database });
-
-if (!fs.existsSync(path.resolve(__dirname, '..', 'static'))) {
-  fs.mkdirSync(path.resolve(__dirname, '..', 'static'), { recursive: true });
-}
 
 @Module({
   controllers: [],
@@ -37,7 +31,7 @@ if (!fs.existsSync(path.resolve(__dirname, '..', 'static'))) {
       envFilePath: `.${process.env.NODE_ENV}.env`,
     }),
     ServeStaticModule.forRoot({
-      rootPath: resolve(__dirname, 'static'),
+      rootPath: resolve(__dirname, '..', 'static'),
     }),
     SequelizeModule.forRoot({
       dialect: 'postgres',
@@ -51,40 +45,98 @@ if (!fs.existsSync(path.resolve(__dirname, '..', 'static'))) {
       sync: {},
     }),
     AdminModule.createAdminAsync({
-      imports: [AuthModule],
-      inject: [AuthService],
-      useFactory: (authService: AuthService) => {
+      imports: [AuthModule, FilesModule],
+      inject: [AuthService, FilesService],
+      useFactory: (authService: AuthService, filesService: FilesService) => {
         return {
-          auth: {
-            authenticate: async (email, password) =>
-              authService.loginAdmin({ email, password }),
-            cookieName: 'test',
-            cookiePassword: 'testPass',
-          },
+          // auth: {
+          //   authenticate: async (email, password) =>
+          //     authService.loginAdmin({ email, password }),
+          //   cookieName: 'test',
+          //   cookiePassword: 'testPass',
+          // },
           adminJsOptions: {
             rootPath: '/admin',
             resources: [
               {
                 resource: Product,
                 options: {
+                  actions: {
+                    new: {
+                      after: async (response) => {
+                        const { record } = response;
+                        const params = flat.unflatten(record.params);
+                        const images = {};
+                        if (
+                          !Object.values(record.errors).every(
+                            (val) => typeof val === 'undefined',
+                          )
+                        ) {
+                          for (const [key, param] of Object.entries(params)) {
+                            if (typeof param === 'object' && param !== null) {
+                              images[key] = await filesService.createFile(
+                                param as { file: string },
+                              );
+                            }
+                          }
+                        }
+                        return {
+                          ...response,
+                          record: {
+                            ...response.record,
+                            params: flat.flatten({ ...params, ...images }),
+                          },
+                          notice: {
+                            message: 'Продукт создан!',
+                            type: 'success',
+                          },
+                        };
+                      },
+                    },
+                  },
                   properties: {
-                    image: {
-                      isVisible: false,
+                    image1: {
+                      components: {
+                        edit: AdminJS.bundle('../adminComponents/UploadPhoto'),
+                      },
+                    },
+                    image2: {
+                      components: {
+                        edit: AdminJS.bundle('../adminComponents/UploadPhoto'),
+                      },
+                    },
+                    image3: {
+                      components: {
+                        edit: AdminJS.bundle('../adminComponents/UploadPhoto'),
+                      },
                     },
                   },
                 },
-                features: [
-                  uploadFeature({
-                    provider: {
-                      local: { bucket: path.join(__dirname, 'static') },
-                    },
-                    properties: {
-                      key: 'image',
-                    },
-                  }),
-                ],
+                // options: {
+                //   properties: {
+                //     image: {
+                //       component: AdminJS.bundle(
+                //         '../adminComponents/UploadPhoto.tsx',
+                //       ),
+                //     },
+                //   },
+                // },
+
+                // features: [
+                //   uploadFeature({
+                //     provider: {
+                //       local: { bucket: path.join(__dirname, 'static') },
+                //     },
+                //     properties: {
+                //       key: 'image',
+                //     },
+                //   }),
+                // ],
               },
               { resource: ProductType, options: {} },
+              { resource: UserRoles },
+              { resource: User },
+              { resource: Role },
             ],
             locale: {
               language: 'ru',
@@ -94,6 +146,9 @@ if (!fs.existsSync(path.resolve(__dirname, '..', 'static'))) {
                   'product-types': 'Линейки',
                   navigation: 'Навигация',
                   dashboard: 'Панель управления',
+                  user_roles: 'Пользователи - Роли',
+                  users: 'Пользователи',
+                  roles: 'Роли',
                 },
                 buttons: {
                   filter: 'Фильтр',

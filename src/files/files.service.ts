@@ -5,20 +5,24 @@ import * as uuid from 'uuid';
 
 @Injectable()
 export class FilesService {
-  async createFile(file: any) {
+  async createFile(fileBlob: { file: string }) {
     try {
       const fileName = uuid.v4() + '.jpg';
-      const filePath = path.resolve(__dirname, '..', 'static');
+      const filePath = path.resolve(__dirname, '..', '..', 'static');
       if (!fs.existsSync(filePath)) {
         fs.mkdirSync(filePath, { recursive: true });
       }
-      fs.writeFileSync(path.join(filePath, fileName), file.buffer);
+      fs.writeFileSync(
+        path.join(filePath, fileName),
+        fileBlob.file.split('base64,')[1],
+        'base64',
+      );
+      return fileName;
     } catch (e) {
       throw new HttpException(
         'Произошла ошибка при записи файла',
         HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
-    return '';
   }
 }
