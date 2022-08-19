@@ -1,10 +1,13 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './src/app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { json } from 'express';
 
 async function start() {
   const PORT = process.env.PORT || 5000;
   const app = await NestFactory.create(AppModule, { cors: true });
+
+  app.use(json({ limit: '10mb' }));
 
   const config = new DocumentBuilder()
     .setTitle('ONE-LAB')

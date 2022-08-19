@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import { DropZone, Label, Box } from '@adminjs/design-system';
 import { BasePropertyProps } from 'adminjs';
 
