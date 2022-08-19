@@ -19,6 +19,7 @@ const UploadPhoto: React.FC<BasePropertyProps> = (props) => {
     const newRecord = { ...record };
     const file = files.length && files[0];
     const b64 = await blobToBase64(file);
+    console.log(newRecord);
     onChange({
       ...newRecord,
       params: {

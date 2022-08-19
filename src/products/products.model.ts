@@ -32,7 +32,7 @@ export class Product extends Model<Product, ProductCreationAttrs> {
     description: 'Пиптидная омолаживающая сыворотка.',
   })
   @Column({
-    type: DataType.STRING,
+    type: DataType.TEXT,
     allowNull: false,
   })
   name: string;
