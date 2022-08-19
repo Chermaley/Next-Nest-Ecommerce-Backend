@@ -1,6 +1,6 @@
 
 # Base image
-FROM node:14.17.0 AS development
+FROM node:16.10.0 AS development
 
 # Create app directory
 WORKDIR /oneLab/src/app
@@ -9,7 +9,7 @@ WORKDIR /oneLab/src/app
 COPY package*.json ./
 
 # Install app dependencies
-RUN npm install --force
+RUN npm install
 
 # Bundle app source
 COPY . .
