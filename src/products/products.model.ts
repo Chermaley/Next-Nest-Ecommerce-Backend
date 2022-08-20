@@ -3,11 +3,13 @@ import {
   Column,
   DataType,
   ForeignKey,
+  HasMany,
   Model,
   Table,
 } from 'sequelize-typescript';
 import { ApiProperty } from '@nestjs/swagger';
 import { ProductType } from '../product-types/product-types.model';
+import { BasketProduct } from './basket-product.model';
 
 interface ProductCreationAttrs {
   name: string;
@@ -84,6 +86,9 @@ export class Product extends Model<Product, ProductCreationAttrs> {
     type: DataType.STRING,
   })
   image3: string;
+
+  @HasMany(() => BasketProduct)
+  basketProducts: BasketProduct[];
 
   @ForeignKey(() => ProductType)
   @Column({ type: DataType.INTEGER, allowNull: false })

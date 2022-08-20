@@ -1,13 +1,16 @@
 import {
+  BelongsTo,
   BelongsToMany,
   Column,
   DataType,
+  HasOne,
   Model,
   Table,
 } from 'sequelize-typescript';
 import { ApiProperty } from '@nestjs/swagger';
 import { UserRoles } from '../roles/user-roles.model';
 import { Role } from '../roles/roles.model';
+import { Basket } from '../basket/basket.model';
 
 interface UserCreationAttrs {
   email: string;
@@ -59,4 +62,7 @@ export class User extends Model<User, UserCreationAttrs> {
 
   @BelongsToMany(() => Role, () => UserRoles)
   roles: Role[];
+
+  @HasOne(() => Basket)
+  basket: Basket;
 }

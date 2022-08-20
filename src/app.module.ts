@@ -21,6 +21,9 @@ import { Database, Resource } from '@adminjs/sequelize';
 import { AuthService } from './auth/auth.service';
 import { FilesService } from './files/files.service';
 import { configureAdmin } from './admin';
+import { BasketModule } from './basket/basket.module';
+import { Basket } from './basket/basket.model';
+import { BasketProduct } from './products/basket-product.model';
 
 AdminJS.registerAdapter({ Resource, Database });
 
@@ -41,9 +44,17 @@ AdminJS.registerAdapter({ Resource, Database });
       username: process.env.POSTGRES_USER,
       password: process.env.POSTGRES_PASSWORD.toString(),
       database: process.env.POSTGRES_DB,
-      models: [User, Role, UserRoles, Product, ProductType],
+      models: [
+        User,
+        Role,
+        UserRoles,
+        Product,
+        ProductType,
+        Basket,
+        BasketProduct,
+      ],
       autoLoadModels: true,
-      sync: { force: true },
+      sync: {},
     }),
     AdminModule.createAdminAsync({
       imports: [AuthModule, FilesModule],
@@ -56,6 +67,7 @@ AdminJS.registerAdapter({ Resource, Database });
     ProductsModule,
     ProductTypesModule,
     FilesModule,
+    BasketModule,
   ],
 })
 export class AppModule {}
