@@ -65,4 +65,10 @@ export class User extends Model<User, UserCreationAttrs> {
 
   @HasOne(() => Basket)
   basket: Basket;
+
+  @Column({
+    type: DataType.STRING,
+    allowNull: true,
+  })
+  refreshTokenHash: string;
 }

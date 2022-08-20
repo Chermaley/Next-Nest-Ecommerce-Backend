@@ -49,4 +49,20 @@ export class UsersService {
       include: { all: true },
     });
   }
+
+  async getUserById(id: number) {
+    return await this.userRepository.findOne({
+      where: { id },
+      include: { all: true },
+    });
+  }
+
+  async updateUserById(userId: number, values: Partial<User>) {
+    await this.userRepository.update(
+      { ...values },
+      {
+        where: { id: userId },
+      },
+    );
+  }
 }

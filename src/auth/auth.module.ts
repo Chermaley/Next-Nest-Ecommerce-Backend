@@ -4,20 +4,12 @@ import { AuthService } from './auth.service';
 import { UsersModule } from '../users/users.module';
 import { RolesModule } from '../roles/roles.module';
 import { JwtModule } from '@nestjs/jwt';
+import { AtStrategy, RtStrategy } from './strategies';
 
 @Module({
   controllers: [AuthController],
-  providers: [AuthService],
-  imports: [
-    forwardRef(() => UsersModule),
-    RolesModule,
-    JwtModule.register({
-      secret: process.env.PRIVATE_KEY || 'SECRET',
-      signOptions: {
-        expiresIn: '24h',
-      },
-    }),
-  ],
+  providers: [AuthService, AtStrategy, RtStrategy],
+  imports: [forwardRef(() => UsersModule), RolesModule, JwtModule.register({})],
   exports: [AuthService, JwtModule],
 })
 export class AuthModule {}

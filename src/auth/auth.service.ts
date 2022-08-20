@@ -1,4 +1,5 @@
 import {
+  ForbiddenException,
   HttpException,
   HttpStatus,
   Injectable,
@@ -6,11 +7,10 @@ import {
 } from '@nestjs/common';
 import { CreateUserDto } from '../users/dto/create-user.dto';
 import { UsersService } from '../users/users.service';
-import { JwtService } from '@nestjs/jwt';
-import * as bcrypt from 'bcryptjs';
-import { User } from '../users/users.model';
-import { CurrentAdmin } from 'adminjs';
+import * as argon from 'argon2';
 import { RolesService } from '../roles/roles.service';
+import { JwtService } from '@nestjs/jwt';
+import { Tokens } from './types';
 
 @Injectable()
 export class AuthService {
@@ -20,54 +20,56 @@ export class AuthService {
     private roleService: RolesService,
   ) {}
 
-  async loginAdmin(userDto: CreateUserDto): Promise<CurrentAdmin> {
-    try {
-      const user = await this.validateUser(userDto);
-      const adminRole = await this.roleService.getRoleByValue('ADMIN');
-      if (!user.roles.some((role) => role.value === adminRole.value))
-        return null;
-      return {
-        email: userDto.email,
-      };
-    } catch {
-      return null;
-    }
+  async localSignIn(dto: CreateUserDto): Promise<Tokens> {
+    const user = await this.validateUser(dto);
+    const tokens = await this.getTokens(user.id, user.email);
+    await this.updateRtHash(user.id, tokens.refreshToken);
+    return this.getTokens(user.id, user.email);
   }
 
-  async login(userDto: CreateUserDto) {
-    const user = await this.validateUser(userDto);
-    return this.generateToken(user);
-  }
-
-  async registration(userDto: CreateUserDto) {
-    const candidate = await this.userService.getUserByEmail(userDto.email);
+  async localSignUp(dto: CreateUserDto): Promise<Tokens> {
+    const candidate = await this.userService.getUserByEmail(dto.email);
     if (candidate) {
       throw new HttpException(
         'Пользователь с таким email существует',
         HttpStatus.BAD_REQUEST,
       );
     }
-    const hashPassword = await bcrypt.hash(userDto.password, 5);
+    const hashPassword = await argon.hash(dto.password);
     const user = await this.userService.createUser({
-      ...userDto,
+      ...dto,
       password: hashPassword,
     });
-    return this.generateToken(user);
+    const tokens = await this.getTokens(user.id, user.email);
+    await this.updateRtHash(user.id, tokens.refreshToken);
+    return tokens;
   }
 
-  private async generateToken(user: User) {
-    const payload = { email: user.email, id: user.id, roles: user.roles };
-    return {
-      token: this.jwtService.sign(payload),
-    };
+  async logout(userId: number) {
+    await this.userService.updateUserById(userId, { refreshTokenHash: null });
   }
 
-  private async validateUser(userDto: CreateUserDto) {
+  async refreshTokens(userId: number, refreshToken: string) {
+    const user = await this.userService.getUserById(userId);
+    if (!user || !user.refreshTokenHash)
+      throw new ForbiddenException('Access denied');
+    const refreshTokensMatches = await argon.verify(
+      user.refreshTokenHash,
+      refreshToken,
+    );
+    if (!refreshTokensMatches) throw new ForbiddenException('Access denied');
+
+    const tokens = await this.getTokens(user.id, user.email);
+    await this.updateRtHash(user.id, tokens.refreshToken);
+    return tokens;
+  }
+
+  async validateUser(userDto: CreateUserDto) {
     const user = await this.userService.getUserByEmail(userDto.email);
     if (user) {
-      const passwordEquals = await bcrypt.compare(
-        userDto.password,
+      const passwordEquals = await argon.verify(
         user.password,
+        userDto.password,
       );
       if (user && passwordEquals) {
         return user;
@@ -76,5 +78,36 @@ export class AuthService {
     throw new UnauthorizedException({
       detail: 'Некорректный email или пароль.',
     });
+  }
+
+  private async updateRtHash(userId: number, refreshToken: string) {
+    const refreshTokenHash = await argon.hash(refreshToken);
+    await this.userService.updateUserById(userId, { refreshTokenHash });
+  }
+
+  private async getTokens(userId: number, email: string): Promise<Tokens> {
+    const [accessToken, refreshToken] = await Promise.all([
+      await this.jwtService.signAsync(
+        {
+          userId,
+          email,
+        },
+        {
+          secret: process.env.ACCESS_SECRET,
+          expiresIn: 60 * 15,
+        },
+      ),
+      await this.jwtService.signAsync(
+        {
+          userId,
+          email,
+        },
+        {
+          secret: process.env.REFRESH_SECRET,
+          expiresIn: 60 * 60 * 24 * 7,
+        },
+      ),
+    ]);
+    return { accessToken, refreshToken };
   }
 }

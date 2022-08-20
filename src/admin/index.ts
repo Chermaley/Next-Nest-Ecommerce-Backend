@@ -13,12 +13,12 @@ export const configureAdmin = (
   authService: AuthService,
   filesService: FilesService,
 ): AdminModuleOptions => ({
-  auth: {
-    authenticate: async (email, password) =>
-      authService.loginAdmin({ email, password }),
-    cookieName: 'test',
-    cookiePassword: 'testPass',
-  },
+  // auth: {
+  //   authenticate: async (email, password) =>
+  //     authService.loginAdmin({ email, password }),
+  //   cookieName: 'test',
+  //   cookiePassword: 'testPass',
+  // },
   adminJsOptions: {
     rootPath: '/admin',
     resources: [
