@@ -57,7 +57,7 @@ export class Product extends Model<Product, ProductCreationAttrs> {
     description: '200р',
   })
   @Column({
-    type: DataType.NUMBER,
+    type: DataType.INTEGER,
     allowNull: false,
   })
   price: number;

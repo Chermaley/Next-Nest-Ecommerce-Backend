@@ -8,11 +8,14 @@ async function start() {
   const PORT = process.env.PORT || 5000;
   const app = await NestFactory.create(AppModule, {
     cors: {
-      origin: ['http://localhost:3000', 'http://194.58.102.237:3050', 'http://194.58.102.237:3000'],
+      origin: [
+        'http://localhost:3000',
+        'http://194.58.102.237:3050',
+        'http://194.58.102.237:3000',
+      ],
       methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
       credentials: true,
       allowedHeaders: ['Origin', 'Content-Type', 'X-Auth-Token'],
-
     },
   });
 
