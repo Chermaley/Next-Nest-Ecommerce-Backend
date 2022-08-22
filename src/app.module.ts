@@ -54,7 +54,7 @@ AdminJS.registerAdapter({ Resource, Database });
         BasketProduct,
       ],
       autoLoadModels: true,
-      sync: {},
+      //sync: {force: true},
     }),
     AdminModule.createAdminAsync({
       imports: [AuthModule, FilesModule],
