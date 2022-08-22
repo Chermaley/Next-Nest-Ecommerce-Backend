@@ -1,13 +1,12 @@
 import {
-  BelongsTo,
   Column,
   DataType,
   ForeignKey,
   Model,
   Table,
 } from 'sequelize-typescript';
-import { Basket } from '../basket/basket.model';
-import { Product } from './products.model';
+import { Basket } from './basket.model';
+import { Product } from '../products/products.model';
 
 @Table({ tableName: 'basket_product', createdAt: false, updatedAt: false })
 export class BasketProduct extends Model<BasketProduct> {
@@ -19,15 +18,29 @@ export class BasketProduct extends Model<BasketProduct> {
   })
   id: number;
 
+  @Column({
+    type: DataType.STRING,
+  })
+  name: string;
+
+  @Column({
+    type: DataType.INTEGER,
+  })
+  quantity: number;
+
+  @Column({
+    type: DataType.INTEGER,
+  })
+  price: number;
+
+  @Column({
+    type: DataType.INTEGER,
+  })
+  subTotalPrice: number;
+
   @ForeignKey(() => Basket)
   basketId: number;
 
-  @BelongsTo(() => Basket)
-  basket: Basket;
-
   @ForeignKey(() => Product)
   productId: number;
-
-  @BelongsTo(() => Product)
-  product: Product;
 }

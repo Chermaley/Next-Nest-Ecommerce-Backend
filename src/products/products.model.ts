@@ -1,5 +1,6 @@
 import {
   BelongsTo,
+  BelongsToMany,
   Column,
   DataType,
   ForeignKey,
@@ -9,7 +10,8 @@ import {
 } from 'sequelize-typescript';
 import { ApiProperty } from '@nestjs/swagger';
 import { ProductType } from '../product-types/product-types.model';
-import { BasketProduct } from './basket-product.model';
+import { BasketProduct } from '../basket/basket-product.model';
+import { Basket } from '../basket/basket.model';
 
 interface ProductCreationAttrs {
   name: string;
@@ -55,10 +57,10 @@ export class Product extends Model<Product, ProductCreationAttrs> {
     description: '200р',
   })
   @Column({
-    type: DataType.STRING,
+    type: DataType.NUMBER,
     allowNull: false,
   })
-  price: string;
+  price: number;
 
   @ApiProperty({
     example: 'Изображение продукта 1.',
@@ -87,13 +89,7 @@ export class Product extends Model<Product, ProductCreationAttrs> {
   })
   image3: string;
 
-  @HasMany(() => BasketProduct)
-  basketProducts: BasketProduct[];
-
   @ForeignKey(() => ProductType)
   @Column({ type: DataType.INTEGER, allowNull: false })
   typeId: number;
-
-  @BelongsTo(() => ProductType)
-  type: ProductType;
 }

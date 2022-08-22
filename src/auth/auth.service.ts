@@ -11,6 +11,7 @@ import * as argon from 'argon2';
 import { RolesService } from '../roles/roles.service';
 import { JwtService } from '@nestjs/jwt';
 import { Tokens } from './types';
+import { CurrentAdmin } from 'adminjs';
 
 @Injectable()
 export class AuthService {
@@ -64,6 +65,20 @@ export class AuthService {
     return tokens;
   }
 
+  async loginAdmin(userDto: CreateUserDto): Promise<CurrentAdmin> {
+    try {
+      const user = await this.validateUser(userDto);
+      const adminRole = await this.roleService.getRoleByValue('ADMIN');
+      if (!user.roles.some((role) => role.value === adminRole.value))
+        return null;
+      return {
+        email: userDto.email,
+      };
+    } catch {
+      return null;
+    }
+  }
+
   async validateUser(userDto: CreateUserDto) {
     const user = await this.userService.getUserByEmail(userDto.email);
     if (user) {
@@ -94,7 +109,7 @@ export class AuthService {
         },
         {
           secret: process.env.ACCESS_SECRET,
-          expiresIn: 60 * 15,
+          expiresIn: 60 * 60 * 24 * 31,
         },
       ),
       await this.jwtService.signAsync(

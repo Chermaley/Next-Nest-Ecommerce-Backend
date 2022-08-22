@@ -23,7 +23,7 @@ import { FilesService } from './files/files.service';
 import { configureAdmin } from './admin';
 import { BasketModule } from './basket/basket.module';
 import { Basket } from './basket/basket.model';
-import { BasketProduct } from './products/basket-product.model';
+import { BasketProduct } from './basket/basket-product.model';
 
 AdminJS.registerAdapter({ Resource, Database });
 

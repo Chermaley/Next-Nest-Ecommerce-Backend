@@ -4,6 +4,7 @@ import {
   Post,
   UseGuards,
   HttpCode,
+  Response,
   HttpStatus,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
@@ -21,14 +22,28 @@ export class AuthController {
 
   @Post('local/signIn')
   @HttpCode(HttpStatus.OK)
-  async localSignIn(@Body() dto: CreateUserDto): Promise<Tokens> {
-    return this.authService.localSignIn(dto);
+  async localSignIn(@Body() dto: CreateUserDto, @Response() res) {
+    const tokens = await this.authService.localSignIn(dto);
+    res.cookie('tokens', JSON.stringify(tokens), {
+      expires: new Date(new Date().getTime() + 1000 * 60 * 60 * 24 * 7),
+      sameSite: 'strict',
+      httpOnly: true,
+    });
+    res.send(tokens);
   }
 
   @Post('local/signup')
   @HttpCode(HttpStatus.CREATED)
-  localSignUp(@Body() dto: CreateUserDto): Promise<Tokens> {
-    return this.authService.localSignUp(dto);
+  localSignUp(@Body() dto: CreateUserDto, @Response() res) {
+    const tokens = this.authService.localSignUp(dto);
+
+    res.cookie('tokens', JSON.stringify(tokens), {
+      expires: new Date(new Date().getTime() + 1000 * 60 * 60 * 24 * 7),
+      sameSite: 'strict',
+      httpOnly: true,
+    });
+
+    res.send(tokens);
   }
 
   @UseGuards(AtGuard)
@@ -41,10 +56,17 @@ export class AuthController {
   @UseGuards(RtGuard)
   @Post('refresh')
   @HttpCode(HttpStatus.OK)
-  refreshTokens(
+  async refreshTokens(
     @GetCurrentUserId() userId: number,
     @GetCurrentUser('refreshToken') refreshToken: string,
+    @Response() res,
   ) {
-    return this.authService.refreshTokens(userId, refreshToken);
+    const tokens = await this.authService.refreshTokens(userId, refreshToken);
+    res.cookie('tokens', JSON.stringify(tokens), {
+      expires: new Date(new Date().getTime() + 1000 * 60 * 60 * 24 * 7),
+      sameSite: 'strict',
+      httpOnly: true,
+    });
+    res.send(tokens);
   }
 }
