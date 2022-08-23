@@ -12,11 +12,16 @@ async function start() {
         'http://localhost:3000',
         'http://194.58.102.237:3050',
         'http://194.58.102.237:3000',
-	'http://one-lab.online'
+        'http://one-lab.online',
       ],
       methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
       credentials: true,
-      allowedHeaders: ['Origin', 'Content-Type', 'X-Auth-Token'],
+      allowedHeaders: [
+        'Origin',
+        'Content-Type',
+        'X-Auth-Token',
+        'Authorization',
+      ],
     },
   });
 

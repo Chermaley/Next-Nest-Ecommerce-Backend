@@ -36,21 +36,21 @@ export class AuthController {
   @HttpCode(HttpStatus.CREATED)
   localSignUp(@Body() dto: CreateUserDto, @Response() res) {
     const tokens = this.authService.localSignUp(dto);
-
     res.cookie('tokens', JSON.stringify(tokens), {
       expires: new Date(new Date().getTime() + 1000 * 60 * 60 * 24 * 7),
       sameSite: 'strict',
       httpOnly: true,
     });
-
     res.send(tokens);
   }
 
   @UseGuards(AtGuard)
   @Post('logout')
   @HttpCode(HttpStatus.OK)
-  logout(@GetCurrentUserId() userId: number) {
-    return this.authService.logout(userId);
+  async logout(@GetCurrentUserId() userId: number, @Response() res) {
+    await this.authService.logout(userId);
+    res.clearCookie('tokens');
+    res.end();
   }
 
   @UseGuards(RtGuard)
