@@ -34,13 +34,14 @@ export class AuthController {
 
   @Post('local/signup')
   @HttpCode(HttpStatus.CREATED)
-  localSignUp(@Body() dto: CreateUserDto, @Response() res) {
-    const tokens = this.authService.localSignUp(dto);
+  async localSignUp(@Body() dto: CreateUserDto, @Response() res) {
+    const tokens = await this.authService.localSignUp(dto);
     res.cookie('tokens', JSON.stringify(tokens), {
       expires: new Date(new Date().getTime() + 1000 * 60 * 60 * 24 * 7),
       sameSite: 'strict',
       httpOnly: true,
     });
+    console.log(tokens);
     res.send(tokens);
   }
 
