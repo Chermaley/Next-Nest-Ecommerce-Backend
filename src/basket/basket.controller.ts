@@ -3,6 +3,7 @@ import { BasketService } from './basket.service';
 import { AtGuard } from '../common/guards';
 import { GetCurrentUserId } from '../common/decorators';
 import { CreateBasketProductDto } from './dto/create-basket-product.dto';
+import { DeleteBasketProductDto } from './dto/delete-basket-product.dto';
 
 @Controller('basket')
 export class BasketController {
@@ -11,15 +12,24 @@ export class BasketController {
   @UseGuards(AtGuard)
   @Get()
   getCart(@GetCurrentUserId() userId: number) {
-    return this.basketService.getCartByUserId(userId);
+    return this.basketService.getBasketByUserId(userId);
   }
 
   @UseGuards(AtGuard)
   @Post('add')
-  addItemToCart(
+  addItemToBasket(
     @GetCurrentUserId() userId: number,
     @Body() dto: CreateBasketProductDto,
   ) {
     return this.basketService.addToBasket(userId, dto);
+  }
+
+  @UseGuards(AtGuard)
+  @Post('delete')
+  deleteItemFromBasket(
+    @GetCurrentUserId() userId: number,
+    @Body() dto: DeleteBasketProductDto,
+  ) {
+    return this.basketService.deleteFromBasket(userId, dto);
   }
 }

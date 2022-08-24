@@ -8,6 +8,7 @@ import { Role } from '../roles/roles.model';
 import { AuthService } from '../auth/auth.service';
 import { FilesService } from '../files/files.service';
 import { locale } from './locale';
+import { ProductComment } from '../product-coments/product-comments.model';
 
 export const configureAdmin = (
   authService: AuthService,
@@ -56,6 +57,7 @@ export const configureAdmin = (
       { resource: UserRoles },
       { resource: User },
       { resource: Role },
+      { resource: ProductComment },
     ],
     locale,
   },

@@ -8,8 +8,20 @@ import {
 import { Basket } from './basket.model';
 import { Product } from '../products/products.model';
 
+interface BasketProductCreationAttrs {
+  name: string;
+  quantity: number;
+  price: number;
+  subTotalPrice: number;
+  basketId: number;
+  productId: number;
+}
+
 @Table({ tableName: 'basket_product', createdAt: false, updatedAt: false })
-export class BasketProduct extends Model<BasketProduct> {
+export class BasketProduct extends Model<
+  BasketProduct,
+  BasketProductCreationAttrs
+> {
   @Column({
     type: DataType.INTEGER,
     unique: true,
@@ -39,8 +51,14 @@ export class BasketProduct extends Model<BasketProduct> {
   subTotalPrice: number;
 
   @ForeignKey(() => Basket)
+  @Column({
+    type: DataType.INTEGER,
+  })
   basketId: number;
 
   @ForeignKey(() => Product)
+  @Column({
+    type: DataType.INTEGER,
+  })
   productId: number;
 }

@@ -24,6 +24,8 @@ import { configureAdmin } from './admin';
 import { BasketModule } from './basket/basket.module';
 import { Basket } from './basket/basket.model';
 import { BasketProduct } from './basket/basket-product.model';
+import { ProductComentsModule } from './product-coments/product-coments.module';
+import { ProductComment } from './product-coments/product-comments.model';
 
 AdminJS.registerAdapter({ Resource, Database });
 
@@ -52,9 +54,10 @@ AdminJS.registerAdapter({ Resource, Database });
         ProductType,
         Basket,
         BasketProduct,
+        ProductComment,
       ],
       autoLoadModels: true,
-      //sync: {force: true},
+      // sync: { force: true },
     }),
     AdminModule.createAdminAsync({
       imports: [AuthModule, FilesModule],
@@ -68,6 +71,7 @@ AdminJS.registerAdapter({ Resource, Database });
     ProductTypesModule,
     FilesModule,
     BasketModule,
+    ProductComentsModule,
   ],
 })
 export class AppModule {}

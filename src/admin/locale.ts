@@ -11,6 +11,7 @@ export const locale: Locale = {
       user_roles: 'Пользователи - Роли',
       users: 'Пользователи',
       roles: 'Роли',
+      'product-comments': 'Комментарии',
     },
     buttons: {
       filter: 'Фильтр',

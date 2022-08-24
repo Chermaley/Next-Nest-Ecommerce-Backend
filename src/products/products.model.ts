@@ -1,6 +1,4 @@
 import {
-  BelongsTo,
-  BelongsToMany,
   Column,
   DataType,
   ForeignKey,
@@ -10,8 +8,7 @@ import {
 } from 'sequelize-typescript';
 import { ApiProperty } from '@nestjs/swagger';
 import { ProductType } from '../product-types/product-types.model';
-import { BasketProduct } from '../basket/basket-product.model';
-import { Basket } from '../basket/basket.model';
+import { ProductComment } from '../product-coments/product-comments.model';
 
 interface ProductCreationAttrs {
   name: string;
@@ -92,4 +89,7 @@ export class Product extends Model<Product, ProductCreationAttrs> {
   @ForeignKey(() => ProductType)
   @Column({ type: DataType.INTEGER, allowNull: false })
   typeId: number;
+
+  @HasMany(() => ProductComment)
+  comments: ProductComment[];
 }

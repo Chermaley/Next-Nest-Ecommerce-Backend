@@ -20,7 +20,9 @@ export class ProductsService {
   }
 
   async getProduct(id: number) {
-    return await this.productRepository.findByPk(id);
+    return await this.productRepository.findByPk(id, {
+      include: { all: true },
+    });
   }
 
   async getAllProducts(typeId?: number, limit = 10, page = 1) {
