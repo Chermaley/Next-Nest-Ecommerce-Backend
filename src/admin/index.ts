@@ -14,14 +14,18 @@ export const configureAdmin = (
   authService: AuthService,
   filesService: FilesService,
 ): AdminModuleOptions => ({
-  auth: {
-    authenticate: async (email, password) =>
-      authService.loginAdmin({ email, password }),
-    cookieName: 'test',
-    cookiePassword: 'testPass',
-  },
+  // auth: {
+  //   authenticate: async (email, password) =>
+  //     authService.loginAdmin({ email, password }),
+  //   cookieName: 'adminToken',
+  //   cookiePassword: 'pass',
+  // },
   adminJsOptions: {
     rootPath: '/admin',
+    dashboard: {
+      component: chat,
+    },
+    assets: {},
     resources: [
       {
         resource: Product,
@@ -81,3 +85,4 @@ const beforeSaveProduct =
   };
 
 const uploadPhotoBundle = AdminJS.bundle('./components/UploadPhoto');
+const chat = AdminJS.bundle('./chat/index');

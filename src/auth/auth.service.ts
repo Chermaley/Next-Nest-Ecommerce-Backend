@@ -12,6 +12,7 @@ import { RolesService } from '../roles/roles.service';
 import { JwtService } from '@nestjs/jwt';
 import { Tokens } from './types';
 import { CurrentAdmin } from 'adminjs';
+import { User } from '../users/users.model';
 
 @Injectable()
 export class AuthService {
@@ -23,9 +24,9 @@ export class AuthService {
 
   async localSignIn(dto: CreateUserDto): Promise<Tokens> {
     const user = await this.validateUser(dto);
-    const tokens = await this.getTokens(user.id, user.email);
+    const tokens = await this.getTokens(user);
     await this.updateRtHash(user.id, tokens.refreshToken);
-    return this.getTokens(user.id, user.email);
+    return this.getTokens(user);
   }
 
   async localSignUp(dto: CreateUserDto): Promise<Tokens> {
@@ -41,7 +42,7 @@ export class AuthService {
       ...dto,
       password: hashPassword,
     });
-    const tokens = await this.getTokens(user.id, user.email);
+    const tokens = await this.getTokens(user);
     await this.updateRtHash(user.id, tokens.refreshToken);
     return tokens;
   }
@@ -60,7 +61,7 @@ export class AuthService {
     );
     if (!refreshTokensMatches) throw new ForbiddenException('Access denied');
 
-    const tokens = await this.getTokens(user.id, user.email);
+    const tokens = await this.getTokens(user);
     await this.updateRtHash(user.id, tokens.refreshToken);
     return tokens;
   }
@@ -69,10 +70,13 @@ export class AuthService {
     try {
       const user = await this.validateUser(userDto);
       const adminRole = await this.roleService.getRoleByValue('ADMIN');
+      const tokens = await this.getTokens(user);
       if (!user.roles.some((role) => role.value === adminRole.value))
         return null;
       return {
+        id: String(user.id),
         email: userDto.email,
+        token: tokens.accessToken,
       };
     } catch {
       return null;
@@ -100,12 +104,13 @@ export class AuthService {
     await this.userService.updateUserById(userId, { refreshTokenHash });
   }
 
-  private async getTokens(userId: number, email: string): Promise<Tokens> {
+  private async getTokens({ id, email, roles }: User): Promise<Tokens> {
     const [accessToken, refreshToken] = await Promise.all([
       await this.jwtService.signAsync(
         {
-          userId,
+          id,
           email,
+          roles,
         },
         {
           secret: process.env.ACCESS_SECRET,
@@ -114,8 +119,9 @@ export class AuthService {
       ),
       await this.jwtService.signAsync(
         {
-          userId,
+          id,
           email,
+          roles,
         },
         {
           secret: process.env.REFRESH_SECRET,
@@ -124,5 +130,11 @@ export class AuthService {
       ),
     ]);
     return { accessToken, refreshToken };
+  }
+
+  async getUserFromJwt(jwt: string): Promise<User> {
+    return this.jwtService.verifyAsync<User>(jwt, {
+      secret: process.env.ACCESS_SECRET,
+    });
   }
 }

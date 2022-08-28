@@ -9,7 +9,6 @@ export class AtStrategy extends PassportStrategy(Strategy, 'jwt') {
   constructor() {
     super({
       jwtFromRequest: ExtractJwt.fromExtractors([
-        ExtractJwt.fromAuthHeaderAsBearerToken(),
         (request: Request) => {
           try {
             const data = JSON.parse(request?.cookies['tokens']);
@@ -21,13 +20,13 @@ export class AtStrategy extends PassportStrategy(Strategy, 'jwt') {
             return null;
           }
         },
+        ExtractJwt.fromAuthHeaderAsBearerToken(),
       ]),
       secretOrKey: process.env.ACCESS_SECRET,
     });
   }
 
   validate(payload: JwtPayload) {
-    console.log(payload);
     return payload;
   }
 }

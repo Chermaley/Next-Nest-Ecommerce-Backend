@@ -8,12 +8,13 @@ import { RolesModule } from '../roles/roles.module';
 import { AuthModule } from '../auth/auth.module';
 import { Basket } from '../basket/basket.model';
 import { BasketModule } from '../basket/basket.module';
+import { Consultation } from '../chat/models/consultation.model';
 
 @Module({
   controllers: [UsersController],
   providers: [UsersService],
   imports: [
-    SequelizeModule.forFeature([User, Role, Basket]),
+    SequelizeModule.forFeature([User, Role, Basket, Consultation]),
     RolesModule,
     BasketModule,
     forwardRef(() => AuthModule),

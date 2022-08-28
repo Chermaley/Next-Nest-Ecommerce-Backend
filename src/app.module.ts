@@ -26,12 +26,17 @@ import { Basket } from './basket/basket.model';
 import { BasketProduct } from './basket/basket-product.model';
 import { ProductComentsModule } from './product-coments/product-coments.module';
 import { ProductComment } from './product-coments/product-comments.model';
+import { ChatService } from './chat/chat.service';
+import { ChatModule } from './chat/chat.module';
+import { Consultation } from './chat/models/consultation.model';
+import { ActiveConsultation } from './chat/models/active-consultation.model';
+import { Message } from './chat/models/message.model';
 
 AdminJS.registerAdapter({ Resource, Database });
 
 @Module({
   controllers: [],
-  providers: [],
+  providers: [ChatService],
   imports: [
     ConfigModule.forRoot({
       envFilePath: `.env`,
@@ -55,6 +60,9 @@ AdminJS.registerAdapter({ Resource, Database });
         Basket,
         BasketProduct,
         ProductComment,
+        Consultation,
+        ActiveConsultation,
+        Message,
       ],
       autoLoadModels: true,
       // sync: { force: true },
@@ -72,6 +80,7 @@ AdminJS.registerAdapter({ Resource, Database });
     FilesModule,
     BasketModule,
     ProductComentsModule,
+    ChatModule,
   ],
 })
 export class AppModule {}

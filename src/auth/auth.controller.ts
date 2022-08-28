@@ -10,7 +10,6 @@ import {
 import { ApiTags } from '@nestjs/swagger';
 import { CreateUserDto } from '../users/dto/create-user.dto';
 import { AuthService } from './auth.service';
-import { Tokens } from './types';
 import { GetCurrentUserId } from '../common/decorators';
 import { GetCurrentUser } from '../common/decorators/get-current-user-decorator';
 import { AtGuard, RtGuard } from '../common/guards';
@@ -41,7 +40,6 @@ export class AuthController {
       sameSite: 'strict',
       httpOnly: true,
     });
-    console.log(tokens);
     res.send(tokens);
   }
 

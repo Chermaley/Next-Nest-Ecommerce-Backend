@@ -1,5 +1,8 @@
+import { Role } from '../../roles/roles.model';
+
 export type JwtPayload = {
-  userId: number;
+  id: number;
+  roles: Role[];
 };
 
 export type JwtPayloadWithRt = JwtPayload & { refreshToken: string };
