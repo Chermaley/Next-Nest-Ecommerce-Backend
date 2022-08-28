@@ -18,6 +18,7 @@ COPY . .
 RUN npm run build
 
 RUN mkdir -p /oneLab/src/app/dist/static
+RUN mkdir -p /oneLab/src/app/migrations
 
 ENV NODE_ENV=production
 
