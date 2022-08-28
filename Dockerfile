@@ -19,5 +19,7 @@ RUN npm run build
 
 RUN mkdir -p /oneLab/src/app/dist/static
 
+ENV NODE_ENV=production
+
 # Start the server using the production build
 CMD [ "node", "dist/main.js" ]

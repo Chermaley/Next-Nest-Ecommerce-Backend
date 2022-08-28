@@ -1,9 +1,0 @@
-{
-  "production": {
-    "username": "postgres",
-    "password": null,
-    "database": "one-lab",
-    "host": "postgres",
-    "dialect": "postgres"
-  }
-}
