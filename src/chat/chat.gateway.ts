@@ -31,7 +31,7 @@ const getTokenFromSocket = (socket: Socket): string | null => {
   }
 };
 
-@WebSocketGateway(5000, {
+@WebSocketGateway({
   namespace: 'chat',
   cors: {
     origin: ['http://localhost:3000', 'http://localhost:5000'],
