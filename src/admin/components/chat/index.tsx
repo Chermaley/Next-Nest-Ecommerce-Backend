@@ -33,7 +33,7 @@ export enum ChatEvent {
   ConsultationClosed = 'consultationClosed',
 }
 
-const apiUrl = 'http://onelabcs.ruu/api';
+const apiUrl = 'http://onelabcs.ru';
 
 const App: React.FC<BasePropertyProps> = () => {
   const [socket, setSocket] = React.useState<Socket>(null);
