@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Text, Box, Input, Button } from '@adminjs/design-system';
 import { Socket } from 'socket.io-client';
-import { Consultation } from '../../../chat/models/consultation.model';
+import { Consultation } from '../../../../chat/models/consultation.model';
 import { initialState } from '../state/chatReducer';
 import {
   setActiveConsultation,

@@ -12,7 +12,7 @@ import { Chat } from './components/Chat';
 import ChatList from './components/ChatList';
 import { BasePropertyProps, useCurrentAdmin } from 'adminjs';
 import { Box } from '@adminjs/design-system';
-import { Message } from '../../chat/models/message.model';
+import { Message } from '../../../chat/models/message.model';
 import styled from 'styled-components';
 
 export enum ChatEvent {
@@ -31,7 +31,7 @@ export enum ChatEvent {
   ConsultationClosed = 'consultationClosed',
 }
 
-export const App: React.FC<BasePropertyProps> = () => {
+const App: React.FC<BasePropertyProps> = () => {
   const [socket, setSocket] = React.useState<Socket>(null);
   const [state, dispatch] = React.useReducer(chatReducer, initialState);
   const { user } = state;

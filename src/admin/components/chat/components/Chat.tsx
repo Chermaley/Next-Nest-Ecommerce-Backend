@@ -3,10 +3,10 @@ import { Socket } from 'socket.io-client';
 import { Box, Button, FormGroup, Text, TextArea } from '@adminjs/design-system';
 import styled from 'styled-components';
 import { initialState } from '../state/chatReducer';
-import { Message } from '../../../chat/models/message.model';
+import { Message } from '../../../../chat/models/message.model';
 import { ChatEvent } from '../index';
 import { setActiveConsultation } from '../state/actions-creators';
-import { ConsultationStatus } from '../../../chat/models/consultation.model';
+import { ConsultationStatus } from '../../../../chat/models/consultation.model';
 
 type ChatProps = {
   socket: Socket;
@@ -194,7 +194,7 @@ const Input: React.FC<InputProps> = ({ submit }) => {
         width="100%"
         border="2px solid #a19999"
         borderRadius="20px"
-        background="#FAFAFA"
+        background="src/admin/components/chat/components/Chat#FAFAFA"
       >
         <NormalTextarea
           placeholder="Введите сообщение"

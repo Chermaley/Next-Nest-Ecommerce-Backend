@@ -85,4 +85,4 @@ const beforeSaveProduct =
   };
 
 const uploadPhotoBundle = AdminJS.bundle('./components/UploadPhoto');
-const chat = AdminJS.bundle('./chat/index');
+const chat = AdminJS.bundle('./components/chat/index');
