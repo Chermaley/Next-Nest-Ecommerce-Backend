@@ -54,7 +54,7 @@ const App: React.FC<BasePropertyProps> = () => {
   }, []);
 
   React.useEffect(() => {
-    const socket = io('${process.env.HOST}/api/chat', {
+    const socket = io(`${process.env.HOST}/api/chat`, {
       extraHeaders: {
         Authorization: `Bearer ${token}`,
       },
