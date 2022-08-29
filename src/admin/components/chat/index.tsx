@@ -41,7 +41,7 @@ const App: React.FC<BasePropertyProps> = () => {
   // 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJhZG1pbiIsInJvbGVzIjpbeyJpZCI6MSwidmFsdWUiOiJBRE1JTiIsImRlc2NyaXB0aW9uIjoi0JDQtNC80LjQvdC40YHRgtGA0LDRgtC-0YAiLCJjcmVhdGVkQXQiOiIyMDIyLTA4LTI4VDA0OjQ5OjQ5LjE4OVoiLCJ1cGRhdGVkQXQiOiIyMDIyLTA4LTI4VDA0OjQ5OjQ5LjE4OVoiLCJVc2VyUm9sZXMiOnsiaWQiOjEsInJvbGVJZCI6MSwidXNlcklkIjoxfX0seyJpZCI6MiwidmFsdWUiOiJVU0VSIiwiZGVzY3JpcHRpb24iOiLQn9C-0LvRjNC30L7QstCw0YLQtdC70YwiLCJjcmVhdGVkQXQiOiIyMDIyLTA4LTI4VDA0OjQ5OjQ5LjE5MVoiLCJ1cGRhdGVkQXQiOiIyMDIyLTA4LTI4VDA0OjQ5OjQ5LjE5MVoiLCJVc2VyUm9sZXMiOnsiaWQiOjIsInJvbGVJZCI6MiwidXNlcklkIjoxfX1dLCJpYXQiOjE2NjE2NzUzODMsImV4cCI6MTY2NDM1Mzc4M30.UGc3VS6xgAWxFh6RMBqZ9Jz3ItOxazmFRPXbz57pFuA';
   React.useEffect(() => {
     (async function getUser() {
-      const response = await fetch('/users/me', {
+      const response = await fetch('/api/users/me', {
         headers: {
           Authorization: `Bearer ${token}`,
           // + currentAdmin.token,
@@ -54,7 +54,7 @@ const App: React.FC<BasePropertyProps> = () => {
   }, []);
 
   React.useEffect(() => {
-    const socket = io('/chat', {
+    const socket = io('/api/chat', {
       extraHeaders: {
         Authorization: `Bearer ${token}`,
       },
