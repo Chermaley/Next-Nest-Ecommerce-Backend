@@ -13,7 +13,7 @@ import ChatList from './components/ChatList';
 import { BasePropertyProps, useCurrentAdmin } from 'adminjs';
 import { Box } from '@adminjs/design-system';
 import { Message } from '../../../chat/models/message.model';
-import styled from 'styled-components';
+import styled from 'styled-components/native';
 
 export enum ChatEvent {
   CreateConsultation = 'createConsultation',
