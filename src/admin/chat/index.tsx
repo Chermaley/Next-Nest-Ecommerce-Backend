@@ -1,4 +1,4 @@
-import React, { useReducer, useState } from 'react';
+import * as React from 'react';
 import { io, Socket } from 'socket.io-client';
 import chatReducer, { initialState } from './state/chatReducer';
 import {
@@ -32,8 +32,8 @@ export enum ChatEvent {
 }
 
 export const App: React.FC<BasePropertyProps> = () => {
-  const [socket, setSocket] = useState<Socket>(null);
-  const [state, dispatch] = useReducer(chatReducer, initialState);
+  const [socket, setSocket] = React.useState<Socket>(null);
+  const [state, dispatch] = React.useReducer(chatReducer, initialState);
   const { user } = state;
   const { activeConsultation } = state;
   const [currentAdmin] = useCurrentAdmin();

@@ -2,7 +2,6 @@ import * as React from 'react';
 import { Text, Box, Input, Button } from '@adminjs/design-system';
 import { Socket } from 'socket.io-client';
 import { Consultation } from '../../../chat/models/consultation.model';
-import { ChatEvent } from '../index';
 import { initialState } from '../state/chatReducer';
 import {
   setActiveConsultation,
@@ -11,7 +10,6 @@ import {
   setIsConsultationsFetching,
   setIsConsultationsPagesEndReached,
 } from '../state/actions-creators';
-import { useEffect, useState } from 'react';
 
 type ChatListProps = {
   socket: Socket;
@@ -40,13 +38,13 @@ const ChatList: React.FC<ChatListProps> = ({
     isConsultationsFetching,
     isConsultationsPagesEndReached,
   } = state;
-  const [selectedCategory, setSelectedCategory] = useState(
+  const [selectedCategory, setSelectedCategory] = React.useState(
     Category.Consultation,
   );
-  const [isHistory, setIsHistory] = useState(false);
+  const [isHistory, setIsHistory] = React.useState(false);
   const currentList = isHistory ? closedConsultations : consultations;
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (!isConsultationsPagesEndReached) {
       getHistory();
     }

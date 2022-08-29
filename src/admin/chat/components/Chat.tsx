@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import * as React from 'react';
 import { Socket } from 'socket.io-client';
 import { Box, Button, FormGroup, Text, TextArea } from '@adminjs/design-system';
 import styled from 'styled-components';
@@ -15,8 +15,8 @@ type ChatProps = {
 };
 
 const useChatScroll = (dep: any) => {
-  const ref = useRef<any>(null);
-  useEffect(() => {
+  const ref = React.useRef<any>(null);
+  React.useEffect(() => {
     if (ref.current) {
       ref.current.scrollTop = ref.current.scrollHeight;
     }
@@ -28,7 +28,7 @@ export const Chat: React.FC<ChatProps> = ({ socket, state, dispatch }) => {
   const { messages, user, activeConsultation } = state;
   const scrollRef = useChatScroll(messages);
 
-  useEffect(() => {
+  React.useEffect(() => {
     socket.emit(ChatEvent.JoinConsultation, activeConsultation.id);
     return () => {
       socket.emit(ChatEvent.LeaveConsultation, activeConsultation.id);
