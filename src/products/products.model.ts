@@ -8,7 +8,7 @@ import {
 } from 'sequelize-typescript';
 import { ApiProperty } from '@nestjs/swagger';
 import { ProductType } from '../product-types/product-types.model';
-import { ProductComment } from '../product-coments/product-comments.model';
+import { ProductComment } from '../product-comments/product-comments.model';
 
 interface ProductCreationAttrs {
   name: string;
@@ -17,7 +17,7 @@ interface ProductCreationAttrs {
   img: string;
 }
 
-@Table({ tableName: 'products' })
+@Table({})
 export class Product extends Model<Product, ProductCreationAttrs> {
   @ApiProperty({ example: '1', description: 'Уникальный id' })
   @Column({

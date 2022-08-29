@@ -19,15 +19,8 @@ export class UsersService {
     const user = await this.userRepository.create(dto);
     const roles: Role[] = [];
     if (userList.length === 0) {
-      const adminRole = await this.roleService.createRole({
-        description: 'Администратор',
-        value: 'ADMIN',
-      });
+      const adminRole = await this.roleService.getRoleByValue('ADMIN');
       roles.push(adminRole);
-      await this.roleService.createRole({
-        description: 'Пользователь',
-        value: 'USER',
-      });
     }
     const userRole = await this.roleService.getRoleByValue('USER');
     const basket = await this.basketRepository.create({ userId: user.id });

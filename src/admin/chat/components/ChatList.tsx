@@ -17,6 +17,7 @@ type ChatListProps = {
   socket: Socket;
   state: typeof initialState;
   dispatch: any;
+  token: string;
 };
 
 enum Category {
@@ -24,7 +25,12 @@ enum Category {
   Support,
 }
 
-const ChatList: React.FC<ChatListProps> = ({ socket, state, dispatch }) => {
+const ChatList: React.FC<ChatListProps> = ({
+  socket,
+  state,
+  dispatch,
+  token,
+}) => {
   const {
     consultations,
     closedConsultations,
@@ -39,8 +45,7 @@ const ChatList: React.FC<ChatListProps> = ({ socket, state, dispatch }) => {
   );
   const [isHistory, setIsHistory] = useState(false);
   const currentList = isHistory ? closedConsultations : consultations;
-  const token =
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJhZG1pbiIsInJvbGVzIjpbeyJpZCI6MSwidmFsdWUiOiJBRE1JTiIsImRlc2NyaXB0aW9uIjoi0JDQtNC80LjQvdC40YHRgtGA0LDRgtC-0YAiLCJjcmVhdGVkQXQiOiIyMDIyLTA4LTI4VDA0OjQ5OjQ5LjE4OVoiLCJ1cGRhdGVkQXQiOiIyMDIyLTA4LTI4VDA0OjQ5OjQ5LjE4OVoiLCJVc2VyUm9sZXMiOnsiaWQiOjEsInJvbGVJZCI6MSwidXNlcklkIjoxfX0seyJpZCI6MiwidmFsdWUiOiJVU0VSIiwiZGVzY3JpcHRpb24iOiLQn9C-0LvRjNC30L7QstCw0YLQtdC70YwiLCJjcmVhdGVkQXQiOiIyMDIyLTA4LTI4VDA0OjQ5OjQ5LjE5MVoiLCJ1cGRhdGVkQXQiOiIyMDIyLTA4LTI4VDA0OjQ5OjQ5LjE5MVoiLCJVc2VyUm9sZXMiOnsiaWQiOjIsInJvbGVJZCI6MiwidXNlcklkIjoxfX1dLCJpYXQiOjE2NjE2NzUzODMsImV4cCI6MTY2NDM1Mzc4M30.UGc3VS6xgAWxFh6RMBqZ9Jz3ItOxazmFRPXbz57pFuA';
+
   useEffect(() => {
     if (!isConsultationsPagesEndReached) {
       getHistory();

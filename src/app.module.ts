@@ -24,8 +24,8 @@ import { configureAdmin } from './admin';
 import { BasketModule } from './basket/basket.module';
 import { Basket } from './basket/basket.model';
 import { BasketProduct } from './basket/basket-product.model';
-import { ProductComentsModule } from './product-coments/product-coments.module';
-import { ProductComment } from './product-coments/product-comments.model';
+import { ProductCommentsModule } from './product-comments/product-comments.module';
+import { ProductComment } from './product-comments/product-comments.model';
 import { ChatService } from './chat/chat.service';
 import { ChatModule } from './chat/chat.module';
 import { Consultation } from './chat/models/consultation.model';
@@ -79,7 +79,7 @@ AdminJS.registerAdapter({ Resource, Database });
     ProductTypesModule,
     FilesModule,
     BasketModule,
-    ProductComentsModule,
+    ProductCommentsModule,
     ChatModule,
   ],
 })

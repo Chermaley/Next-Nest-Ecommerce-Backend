@@ -6,7 +6,7 @@ interface ProductTypeCreationAttrs {
   name: string;
 }
 
-@Table({ tableName: 'product-types' })
+@Table({})
 export class ProductType extends Model<ProductType, ProductTypeCreationAttrs> {
   @ApiProperty({ example: '1', description: 'Уникальный id' })
   @Column({

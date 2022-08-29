@@ -11,7 +11,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { BasketProduct } from './basket-product.model';
 import { User } from '../users/users.model';
 
-@Table({ tableName: 'basket', createdAt: false, updatedAt: false })
+@Table({ createdAt: false, updatedAt: false })
 export class Basket extends Model<Basket> {
   @ApiProperty({ example: '1', description: 'Уникальный id' })
   @Column({

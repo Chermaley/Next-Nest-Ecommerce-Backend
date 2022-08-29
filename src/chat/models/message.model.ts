@@ -9,7 +9,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { User } from '../../users/users.model';
 import { Consultation } from './consultation.model';
 
-@Table({ tableName: 'messages', updatedAt: false })
+@Table({ updatedAt: false })
 export class Message extends Model<Message> {
   @ApiProperty({ example: '1', description: 'Уникальный id' })
   @Column({

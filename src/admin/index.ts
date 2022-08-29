@@ -8,18 +8,18 @@ import { Role } from '../roles/roles.model';
 import { AuthService } from '../auth/auth.service';
 import { FilesService } from '../files/files.service';
 import { locale } from './locale';
-import { ProductComment } from '../product-coments/product-comments.model';
+import { ProductComment } from '../product-comments/product-comments.model';
 
 export const configureAdmin = (
   authService: AuthService,
   filesService: FilesService,
 ): AdminModuleOptions => ({
-  // auth: {
-  //   authenticate: async (email, password) =>
-  //     authService.loginAdmin({ email, password }),
-  //   cookieName: 'adminToken',
-  //   cookiePassword: 'pass',
-  // },
+  auth: {
+    authenticate: async (email, password) =>
+      authService.loginAdmin({ email, password }),
+    cookieName: 'adminToken',
+    cookiePassword: 'pass',
+  },
   adminJsOptions: {
     rootPath: '/admin',
     dashboard: {

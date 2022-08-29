@@ -13,7 +13,7 @@ interface ProductCommentCreationAttrs {
   name: string;
 }
 
-@Table({ tableName: 'product-comments' })
+@Table({})
 export class ProductComment extends Model<
   ProductComment,
   ProductCommentCreationAttrs

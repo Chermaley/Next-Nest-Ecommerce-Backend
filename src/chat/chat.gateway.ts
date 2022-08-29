@@ -97,6 +97,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
   @SubscribeMessage('createConsultation')
   async createConsultation(socket: Socket, userId) {
+    console.log('create');
     const consultation = await this.consultationService.createConsultation(
       userId,
     );

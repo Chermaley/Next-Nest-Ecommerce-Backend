@@ -4,14 +4,14 @@ export const locale: Locale = {
   language: 'ru',
   translations: {
     labels: {
-      products: 'Продукты',
-      'product-types': 'Линейки',
+      Products: 'Продукты',
+      ProductTypes: 'Линейки',
       navigation: 'Навигация',
       dashboard: 'Панель управления',
-      user_roles: 'Пользователи - Роли',
-      users: 'Пользователи',
-      roles: 'Роли',
-      'product-comments': 'Комментарии',
+      UserRoles: 'Пользователи - Роли',
+      Users: 'Пользователи',
+      Roles: 'Роли',
+      ProductComments: 'Комментарии',
     },
     buttons: {
       filter: 'Фильтр',

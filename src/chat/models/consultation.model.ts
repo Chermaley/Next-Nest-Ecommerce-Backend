@@ -16,7 +16,7 @@ export enum ConsultationStatus {
   Closed = 'Closed',
 }
 
-@Table({ tableName: 'consultations', createdAt: false })
+@Table({ createdAt: false })
 export class Consultation extends Model<Consultation> {
   @ApiProperty({ example: '1', description: 'Уникальный id' })
   @Column({

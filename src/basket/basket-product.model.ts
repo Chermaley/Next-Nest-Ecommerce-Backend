@@ -17,7 +17,7 @@ interface BasketProductCreationAttrs {
   productId: number;
 }
 
-@Table({ tableName: 'basket_product', createdAt: false, updatedAt: false })
+@Table({ createdAt: false, updatedAt: false })
 export class BasketProduct extends Model<
   BasketProduct,
   BasketProductCreationAttrs

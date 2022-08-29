@@ -9,7 +9,7 @@ import { AuthModule } from '../auth/auth.module';
 import { FilesModule } from '../files/files.module';
 import { BasketProduct } from '../basket/basket-product.model';
 import { BasketModule } from '../basket/basket.module';
-import { ProductComment } from '../product-coments/product-comments.model';
+import { ProductComment } from '../product-comments/product-comments.model';
 
 @Module({
   controllers: [ProductsController],
