@@ -76,12 +76,12 @@ const App: React.FC<BasePropertyProps> = () => {
   return (
     user && (
       <Container variant="grey">
-        {/*<ChatList*/}
-        {/*  token={token}*/}
-        {/*  socket={socket}*/}
-        {/*  state={state}*/}
-        {/*  dispatch={dispatch}*/}
-        {/*/>*/}
+        <ChatList
+          token={token}
+          socket={socket}
+          state={state}
+          dispatch={dispatch}
+        />
         {/*{activeConsultation && (*/}
         {/*  <Chat socket={socket} state={state} dispatch={dispatch} />*/}
         {/*)}*/}
