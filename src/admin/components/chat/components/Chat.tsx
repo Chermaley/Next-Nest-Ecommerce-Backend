@@ -1,12 +1,11 @@
 import * as React from 'react';
 import { Socket } from 'socket.io-client';
 import { Box, Button, FormGroup, Text, TextArea } from '@adminjs/design-system';
-import styled from 'styled-components';
+import * as styled from 'styled-components';
 import { initialState } from '../state/chatReducer';
 import { Message } from '../../../../chat/models/message.model';
 import { ChatEvent } from '../index';
 import { setActiveConsultation } from '../state/actions-creators';
-import { ConsultationStatus } from '../../../../chat/models/consultation.model';
 
 type ChatProps = {
   socket: Socket;
