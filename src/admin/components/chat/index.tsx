@@ -46,7 +46,7 @@ const App: React.FC<BasePropertyProps> = () => {
   React.useEffect(() => {
     (async function getUser() {
       console.log(process.env.HOST);
-      const response = await fetch(`${apiUrl}/api/users/me`, {
+      const response = await fetch(`/api/users/me`, {
         headers: {
           Authorization: `Bearer ${token}`,
           // + currentAdmin.token,
@@ -59,7 +59,7 @@ const App: React.FC<BasePropertyProps> = () => {
   }, []);
 
   React.useEffect(() => {
-    const socket = io(`${apiUrl}/api/chat`, {
+    const socket = io(`/api/chat`, {
       extraHeaders: {
         Authorization: `Bearer ${token}`,
       },

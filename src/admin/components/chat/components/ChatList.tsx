@@ -57,7 +57,7 @@ const ChatList: React.FC<ChatListProps> = ({
   const getHistory = async () => {
     dispatch(setIsConsultationsFetching(false));
     const response = await fetch(
-      `${process.env.HOST}/chat/closedConsultations?pageSize=10&page=${currentConsultationsPage}`,
+      `/api/chat/closedConsultations?pageSize=10&page=${currentConsultationsPage}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,
