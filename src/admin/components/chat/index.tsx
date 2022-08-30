@@ -33,8 +33,6 @@ export enum ChatEvent {
   ConsultationClosed = 'consultationClosed',
 }
 
-const apiUrl = 'https://onelabcs.ru';
-
 const App: React.FC<BasePropertyProps> = () => {
   const [socket, setSocket] = React.useState<Socket>(null);
   const [state, dispatch] = React.useReducer(chatReducer, initialState);

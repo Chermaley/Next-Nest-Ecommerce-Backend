@@ -29,65 +29,65 @@ const Chat: React.FC<ChatProps> = ({ socket, state, dispatch }) => {
   const { messages, user, activeConsultation } = state;
   const scrollRef = useChatScroll(messages);
 
-  React.useEffect(() => {
-    socket.emit(ChatEvent.JoinConsultation, activeConsultation.id);
-    return () => {
-      socket.emit(ChatEvent.LeaveConsultation, activeConsultation.id);
-    };
-  }, [activeConsultation]);
-
-  const sendMessage = (text: string) => {
-    if (user) {
-      socket.emit(ChatEvent.SendMessage, {
-        message: text,
-        userId: user.id,
-        consultationId: activeConsultation.id,
-      });
-    }
-  };
-
-  const closeConsultation = () => {
-    socket.emit(ChatEvent.CloseConsultation, activeConsultation.id);
-    dispatch(setActiveConsultation(null));
-  };
+  // React.useEffect(() => {
+  //   socket.emit(ChatEvent.JoinConsultation, activeConsultation.id);
+  //   return () => {
+  //     socket.emit(ChatEvent.LeaveConsultation, activeConsultation.id);
+  //   };
+  // }, [activeConsultation]);
+  //
+  // const sendMessage = (text: string) => {
+  //   if (user) {
+  //     socket.emit(ChatEvent.SendMessage, {
+  //       message: text,
+  //       userId: user.id,
+  //       consultationId: activeConsultation.id,
+  //     });
+  //   }
+  // };
+  //
+  // const closeConsultation = () => {
+  //   socket.emit(ChatEvent.CloseConsultation, activeConsultation.id);
+  //   dispatch(setActiveConsultation(null));
+  // };
 
   return (
     <Box height="100%" variant="white">
-      <Box
-        flex
-        justifyContent="space-between"
-        alignItems="center"
-        variant="grey"
-        marginBottom={15}
-      >
-        <Text fontSize={16}>Консультация c id: {activeConsultation.id}</Text>
-        {activeConsultation.status === 'Open' && (
-          <Button onClick={closeConsultation}>Закрыть</Button>
-        )}
-      </Box>
-      <Box variant="light">
-        <Box flex flexDirection="column" height="75vh">
-          <Box
-            flex={1}
-            marginBottom="10px"
-            padding="20px 10px 0 10px"
-            overflowY="scroll"
-            position="relative"
-            ref={scrollRef}
-          >
-            {messages?.map((message) => (
-              <MessageItem
-                key={message.id}
-                isAuthor={user.id === message.userId}
-                message={message}
-              />
-            ))}
-          </Box>
-          {activeConsultation.status === 'Open' && (
-            <Input submit={sendMessage} />
-          )}
-        </Box>
-      </Box>
+      {/*<Box*/}
+      {/*  flex*/}
+      {/*  justifyContent="space-between"*/}
+      {/*  alignItems="center"*/}
+      {/*  variant="grey"*/}
+      {/*  marginBottom={15}*/}
+      {/*>*/}
+      {/*  <Text fontSize={16}>Консультация c id: {activeConsultation.id}</Text>*/}
+      {/*  {activeConsultation.status === 'Open' && (*/}
+      {/*    <Button onClick={closeConsultation}>Закрыть</Button>*/}
+      {/*  )}*/}
+      {/*</Box>*/}
+      {/*<Box variant="light">*/}
+      {/*  <Box flex flexDirection="column" height="75vh">*/}
+      {/*    <Box*/}
+      {/*      flex={1}*/}
+      {/*      marginBottom="10px"*/}
+      {/*      padding="20px 10px 0 10px"*/}
+      {/*      overflowY="scroll"*/}
+      {/*      position="relative"*/}
+      {/*      ref={scrollRef}*/}
+      {/*    >*/}
+      {/*      {messages?.map((message) => (*/}
+      {/*        <MessageItem*/}
+      {/*          key={message.id}*/}
+      {/*          isAuthor={user.id === message.userId}*/}
+      {/*          message={message}*/}
+      {/*        />*/}
+      {/*      ))}*/}
+      {/*    </Box>*/}
+      {/*    {activeConsultation.status === 'Open' && (*/}
+      {/*      <Input submit={sendMessage} />*/}
+      {/*    )}*/}
+      {/*  </Box>*/}
+      {/*</Box>*/}
     </Box>
   );
 };
