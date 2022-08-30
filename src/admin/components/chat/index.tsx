@@ -8,7 +8,7 @@ import {
   setMessages,
   setUser,
 } from './state/actions-creators';
-import { Chat } from './components/Chat';
+import Chat from './components/Chat';
 import ChatList from './components/ChatList';
 import { BasePropertyProps, useCurrentAdmin } from 'adminjs';
 import { Box } from '@adminjs/design-system';
