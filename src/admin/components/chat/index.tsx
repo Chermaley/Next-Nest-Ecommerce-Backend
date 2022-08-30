@@ -84,8 +84,9 @@ const App: React.FC<BasePropertyProps> = () => {
           dispatch={dispatch}
         />
         {activeConsultation ? (
-          <Chat socket={socket} state={state} dispatch={dispatch} />
-        ) : null}
+          <div>'edsfgsd'</div>
+        ) : // <Chat socket={socket} state={state} dispatch={dispatch} />
+        null}
       </Container>
     )
   );

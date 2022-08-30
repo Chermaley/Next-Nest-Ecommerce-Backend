@@ -36,20 +36,20 @@ const Chat: React.FC<ChatProps> = ({ socket, state, dispatch }) => {
     };
   }, [activeConsultation]);
 
-  // const sendMessage = (text: string) => {
-  //   if (user) {
-  //     socket.emit(ChatEvent.SendMessage, {
-  //       message: text,
-  //       userId: user.id,
-  //       consultationId: activeConsultation.id,
-  //     });
-  //   }
-  // };
-  //
-  // const closeConsultation = () => {
-  //   socket.emit(ChatEvent.CloseConsultation, activeConsultation.id);
-  //   dispatch(setActiveConsultation(null));
-  // };
+  const sendMessage = (text: string) => {
+    if (user) {
+      socket.emit(ChatEvent.SendMessage, {
+        message: text,
+        userId: user.id,
+        consultationId: activeConsultation.id,
+      });
+    }
+  };
+
+  const closeConsultation = () => {
+    socket.emit(ChatEvent.CloseConsultation, activeConsultation.id);
+    dispatch(setActiveConsultation(null));
+  };
 
   return (
     <Box height="100%" variant="white">
@@ -61,9 +61,9 @@ const Chat: React.FC<ChatProps> = ({ socket, state, dispatch }) => {
         marginBottom={15}
       >
         <Text fontSize={16}>Консультация c id: {activeConsultation.id}</Text>
-        {/*{activeConsultation.status === 'Open' && (*/}
-        {/*  <Button onClick={closeConsultation}>Закрыть</Button>*/}
-        {/*)}*/}
+        {activeConsultation.status === 'Open' && (
+          <Button onClick={closeConsultation}>Закрыть</Button>
+        )}
       </Box>
       <Box variant="light">
         <Box flex flexDirection="column" height="75vh">
@@ -83,9 +83,9 @@ const Chat: React.FC<ChatProps> = ({ socket, state, dispatch }) => {
               />
             ))}
           </Box>
-          {/*{activeConsultation.status === 'Open' && (*/}
-          {/*  <Input submit={sendMessage} />*/}
-          {/*)}*/}
+          {activeConsultation.status === 'Open' && (
+            <Input submit={sendMessage} />
+          )}
         </Box>
       </Box>
     </Box>
