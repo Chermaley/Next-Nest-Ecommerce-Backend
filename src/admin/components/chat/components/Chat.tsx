@@ -53,18 +53,18 @@ export const Chat: React.FC<ChatProps> = ({ socket, state, dispatch }) => {
 
   return (
     <Box height="100%" variant="white">
-      {/*<Box*/}
-      {/*  flex*/}
-      {/*  justifyContent="space-between"*/}
-      {/*  alignItems="center"*/}
-      {/*  variant="grey"*/}
-      {/*  marginBottom={15}*/}
-      {/*>*/}
-      {/*  <Text fontSize={16}>Консультация c id: {activeConsultation.id}</Text>*/}
-      {/*  {activeConsultation.status === 'Open' && (*/}
-      {/*    <Button onClick={closeConsultation}>Закрыть</Button>*/}
-      {/*  )}*/}
-      {/*</Box>*/}
+      <Box
+        flex
+        justifyContent="space-between"
+        alignItems="center"
+        variant="grey"
+        marginBottom={15}
+      >
+        <Text fontSize={16}>Консультация c id: {activeConsultation.id}</Text>
+        {activeConsultation.status === 'Open' && (
+          <Button onClick={closeConsultation}>Закрыть</Button>
+        )}
+      </Box>
       <Box variant="light">
         <Box flex flexDirection="column" height="75vh">
           <Box
