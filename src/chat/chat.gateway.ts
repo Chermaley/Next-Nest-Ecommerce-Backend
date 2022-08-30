@@ -34,7 +34,11 @@ const getTokenFromSocket = (socket: Socket): string | null => {
 @WebSocketGateway({
   namespace: 'chat',
   cors: {
-    origin: ['http://localhost:3000', 'http://localhost:5000'],
+    origin: [
+      'http://localhost:3000',
+      'http://localhost:5000',
+      'https://one-lab.online',
+    ],
     credentials: true,
     transports: ['websocket'],
   },
