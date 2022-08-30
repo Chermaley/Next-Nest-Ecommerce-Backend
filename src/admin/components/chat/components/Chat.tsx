@@ -37,20 +37,20 @@ const Chat: React.FC<ChatProps> = ({ socket, state, dispatch }) => {
   // }, [activeConsultation]);
   //
 
-  const sendMessage = (text: string) => {
-    if (user) {
-      socket.emit(ChatEvent.SendMessage, {
-        message: text,
-        userId: user.id,
-        consultationId: activeConsultation.id,
-      });
-    }
-  };
-
-  const closeConsultation = () => {
-    socket.emit(ChatEvent.CloseConsultation, activeConsultation.id);
-    dispatch(setActiveConsultation(null));
-  };
+  // const sendMessage = (text: string) => {
+  //   if (user) {
+  //     socket.emit(ChatEvent.SendMessage, {
+  //       message: text,
+  //       userId: user.id,
+  //       consultationId: activeConsultation.id,
+  //     });
+  //   }
+  // };
+  //
+  // const closeConsultation = () => {
+  //   socket.emit(ChatEvent.CloseConsultation, activeConsultation.id);
+  //   dispatch(setActiveConsultation(null));
+  // };
 
   return (
     <Box height="100%" variant="white">
