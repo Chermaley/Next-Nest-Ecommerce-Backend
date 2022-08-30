@@ -83,9 +83,9 @@ const Chat: React.FC<ChatProps> = ({ socket, state, dispatch }) => {
               />
             ))}
           </Box>
-          {activeConsultation.status === 'Open' && (
-            <Input submit={sendMessage} />
-          )}
+          {/*{activeConsultation.status === 'Open' && (*/}
+          {/*  <Input submit={sendMessage} />*/}
+          {/*)}*/}
         </Box>
       </Box>
     </Box>
