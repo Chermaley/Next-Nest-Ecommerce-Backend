@@ -51,45 +51,7 @@ export const Chat: React.FC<ChatProps> = ({ socket, state, dispatch }) => {
     dispatch(setActiveConsultation(null));
   };
 
-  return (
-    <Box height="100%" variant="white">
-      {/*<Box*/}
-      {/*  flex*/}
-      {/*  justifyContent="space-between"*/}
-      {/*  alignItems="center"*/}
-      {/*  variant="grey"*/}
-      {/*  marginBottom={15}*/}
-      {/*>*/}
-      {/*  <Text fontSize={16}>Консультация c id: {activeConsultation.id}</Text>*/}
-      {/*  {activeConsultation.status === 'Open' && (*/}
-      {/*    <Button onClick={closeConsultation}>Закрыть</Button>*/}
-      {/*  )}*/}
-      {/*</Box>*/}
-      {/*<Box variant="light">*/}
-      {/*  <Box flex flexDirection="column" height="75vh">*/}
-      {/*    <Box*/}
-      {/*      flex={1}*/}
-      {/*      marginBottom="10px"*/}
-      {/*      padding="20px 10px 0 10px"*/}
-      {/*      overflowY="scroll"*/}
-      {/*      position="relative"*/}
-      {/*      ref={scrollRef}*/}
-      {/*    >*/}
-      {/*      {messages?.map((message) => (*/}
-      {/*        <MessageItem*/}
-      {/*          key={message.id}*/}
-      {/*          isAuthor={user.id === message.userId}*/}
-      {/*          message={message}*/}
-      {/*        />*/}
-      {/*      ))}*/}
-      {/*    </Box>*/}
-      {/*    {activeConsultation.status === 'Open' && (*/}
-      {/*      <Input submit={sendMessage} />*/}
-      {/*    )}*/}
-      {/*  </Box>*/}
-      {/*</Box>*/}
-    </Box>
-  );
+  return <Box height="100%" variant="white"></Box>;
 };
 
 const MessageItem: React.FC<{ message: Message; isAuthor: boolean }> = ({
