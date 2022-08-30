@@ -1,6 +1,6 @@
 
 # Base image
-FROM node:16.10.0 AS development
+FROM node:16.0.0
 
 # Create app directory
 WORKDIR /oneLab/src/app

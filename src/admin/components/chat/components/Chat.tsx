@@ -6,8 +6,8 @@ import { Message } from '../../../../chat/models/message.model';
 import { ChatEvent } from '../index';
 import { setActiveConsultation } from '../state/actions-creators';
 
-// import styled from 'styled-components';
-import * as styled from 'styled-components';
+import styled from 'styled-components';
+// import * as styled from 'styled-components';
 
 type ChatProps = {
   socket: Socket;

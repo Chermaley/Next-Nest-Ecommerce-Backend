@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { io, Socket } from 'socket.io-client';
 import chatReducer, { initialState } from './state/chatReducer';
 import {
@@ -14,8 +14,8 @@ import { BasePropertyProps, useCurrentAdmin } from 'adminjs';
 import { Box } from '@adminjs/design-system';
 import { Message } from '../../../chat/models/message.model';
 
-// import styled from 'styled-components';
-import * as styled from 'styled-components';
+import styled from 'styled-components';
+// import * as styled from 'styled-components';
 
 export enum ChatEvent {
   CreateConsultation = 'createConsultation',
@@ -84,9 +84,8 @@ const App: React.FC<BasePropertyProps> = () => {
           dispatch={dispatch}
         />
         {activeConsultation ? (
-          <div>'edsfgsd'</div>
-        ) : // <Chat socket={socket} state={state} dispatch={dispatch} />
-        null}
+          <Chat socket={socket} state={state} dispatch={dispatch} />
+        ) : null}
       </Container>
     )
   );
