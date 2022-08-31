@@ -1,12 +1,12 @@
-import * as React from 'react';
+import React from 'react';
 import { Socket } from 'socket.io-client';
 import { Box, Button, FormGroup, Text, TextArea } from '@adminjs/design-system';
 import { initialState } from '../state/chatReducer';
 import { Message } from '../../../../chat/models/message.model';
-import { ChatEvent } from '../index';
 import { setActiveConsultation } from '../state/actions-creators';
 
 import styled from 'styled-components';
+import { ChatEvent } from '../types/Event';
 // import * as styled from 'styled-components';
 
 type ChatProps = {
@@ -126,7 +126,7 @@ const MessageItem: React.FC<{ message: Message; isAuthor: boolean }> = ({
   );
 };
 
-const MessageRightContent = styled(Box)`
+const MessageRightContent = styled`
   flex-direction: column;
   max-width: 250px;
   display: inline-flex;

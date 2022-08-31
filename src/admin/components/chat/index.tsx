@@ -15,23 +15,8 @@ import { Box } from '@adminjs/design-system';
 import { Message } from '../../../chat/models/message.model';
 
 import styled from 'styled-components';
+import { ChatEvent } from './types/Event';
 // import * as styled from 'styled-components';
-
-export enum ChatEvent {
-  CreateConsultation = 'createConsultation',
-  LeaveConsultation = 'leaveConsultation',
-  GetAllConsultations = 'getAllConsultations',
-  Consultations = 'consultations',
-  ActiveConsultation = 'activeConsultation',
-  JoinConsultation = 'joinConsultationConsult',
-  Messages = 'messages',
-  SendMessage = 'sendMessage',
-  NewMessage = 'newMessage',
-  NewConsultation = 'newConsultation',
-  NewMessageInConversation = 'newMessageInConsultation',
-  CloseConsultation = 'closeConsultation',
-  ConsultationClosed = 'consultationClosed',
-}
 
 const App: React.FC<BasePropertyProps> = () => {
   const [socket, setSocket] = React.useState<Socket>(null);
