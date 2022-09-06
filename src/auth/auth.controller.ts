@@ -5,14 +5,15 @@ import {
   UseGuards,
   HttpCode,
   Response,
-  HttpStatus,
-} from '@nestjs/common';
+  HttpStatus, UsePipes,
+} from "@nestjs/common";
 import { ApiTags } from '@nestjs/swagger';
 import { CreateUserDto } from '../users/dto/create-user.dto';
 import { AuthService } from './auth.service';
 import { GetCurrentUserId } from '../common/decorators';
 import { GetCurrentUser } from '../common/decorators/get-current-user-decorator';
 import { AtGuard, RtGuard } from '../common/guards';
+import { ValidationPipe } from "../common/pipes";
 
 @ApiTags('Авторизация')
 @Controller('auth')
@@ -33,6 +34,7 @@ export class AuthController {
 
   @Post('local/signup')
   @HttpCode(HttpStatus.CREATED)
+  @UsePipes(ValidationPipe)
   async localSignUp(@Body() dto: CreateUserDto, @Response() res) {
     const tokens = await this.authService.localSignUp(dto);
     res.cookie('tokens', JSON.stringify(tokens), {

@@ -7,6 +7,8 @@ import { ActiveConsultation } from '../models/active-consultation.model';
 import { JoinConsultationDto } from '../dto/join-consultation.dto';
 import { CreateMessageDto } from '../dto/create-message.dto';
 import { Role } from '../../roles/roles.model';
+import { MessageAttachment } from '../models/messageAttachment';
+import { CreateConsultationDto } from '../dto/create-consultation.dto';
 
 @Injectable()
 export class ConsultationService {
@@ -16,6 +18,8 @@ export class ConsultationService {
     @InjectModel(ActiveConsultation)
     private activeConsultationRepository: typeof ActiveConsultation,
     @InjectModel(Message) private messageRepository: typeof Message,
+    @InjectModel(MessageAttachment)
+    private messageAttachmentRepository: typeof MessageAttachment,
     @InjectModel(User) private userRepository: typeof User,
   ) {}
 
@@ -53,20 +57,6 @@ export class ConsultationService {
     });
   }
 
-  // async getOpenUserConsultation(
-  //   userId: number,
-  // ): Promise<Consultation | undefined> {
-  //   return this.consultationRepository.findOne({
-  //     where: { status: ConsultationStatus.Open },
-  //     include: {
-  //       model: User,
-  //       where: {
-  //         id: userId,
-  //       },
-  //     },
-  //   });
-  // }
-
   async getOpenConsultations(
     userId?: number,
   ): Promise<Consultation[] | undefined> {
@@ -84,16 +74,18 @@ export class ConsultationService {
   }
 
   async createConsultation(
-    creatorId: number,
+    dto: CreateConsultationDto,
   ): Promise<Consultation | undefined> {
-    const user = await this.userRepository.findByPk(creatorId, {
+    const user = await this.userRepository.findByPk(dto.creatorId, {
       include: { model: Consultation },
     });
     // Only one consultation per user
+    console.log(user, 'user');
     const openConsultations = await this.getOpenConsultations(user.id);
     if (openConsultations?.length === 0) {
       const consultation = await this.consultationRepository.create({
         creator: user,
+        type: dto.type,
       });
       await consultation.$set('creator', user);
       return consultation;
@@ -112,10 +104,7 @@ export class ConsultationService {
         socketId,
       });
     } else {
-      await this.activeConsultationRepository.destroy({
-        where: { userId },
-      });
-      return this.activeConsultationRepository.create({
+      return activeConsultation.update({
         consultationId,
         userId,
         socketId,
@@ -147,11 +136,24 @@ export class ConsultationService {
     });
   }
 
-  createMessage(dto: CreateMessageDto): Promise<Message> {
-    return this.messageRepository.create(dto);
+  async createMessage(dto: CreateMessageDto): Promise<Message> {
+    let { attachments, ...restDto } = dto;
+    const message = await this.messageRepository.create(restDto);
+    attachments = await this.messageAttachmentRepository.bulkCreate(
+      attachments.map((attachment) => ({
+        ...attachment,
+        messageId: message.id,
+      })),
+    );
+    await message.update('attachments', attachments);
+    return message.reload({ include: { model: MessageAttachment } });
   }
 
   getMessages(consultationId: number): Promise<Message[]> {
-    return this.messageRepository.findAll({ where: { consultationId } });
+    return this.messageRepository.findAll({
+      where: { consultationId },
+      order: [['createdAt', 'asc']],
+      include: { model: MessageAttachment },
+    });
   }
 }

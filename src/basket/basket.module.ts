@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { Product } from '../products/products.model';
+import { Product } from '../products/models/products.model';
 import { BasketController } from './basket.controller';
 import { BasketService } from './basket.service';
 import { SequelizeModule } from '@nestjs/sequelize';

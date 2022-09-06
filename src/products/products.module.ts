@@ -1,19 +1,19 @@
 import { forwardRef, Module } from '@nestjs/common';
-import { ProductsService } from './products.service';
+import { ProductsService } from './services/products.service';
 import { SequelizeModule } from '@nestjs/sequelize';
-import { Product } from './products.model';
-import { ProductType } from '../product-types/product-types.model';
-import { ProductTypesModule } from '../product-types/product-types.module';
+import { Product } from './models/products.model';
+import { ProductType } from './models/product-types.model';
 import { ProductsController } from './products.controller';
 import { AuthModule } from '../auth/auth.module';
 import { FilesModule } from '../files/files.module';
 import { BasketProduct } from '../basket/basket-product.model';
 import { BasketModule } from '../basket/basket.module';
-import { ProductComment } from '../product-comments/product-comments.model';
+import { ProductComment } from './models/product-comments.model';
+import { ProductTypesService } from "./services/product-types.service";
 
 @Module({
   controllers: [ProductsController],
-  providers: [ProductsService],
+  providers: [ProductsService, ProductTypesService],
   imports: [
     SequelizeModule.forFeature([
       Product,
@@ -21,7 +21,6 @@ import { ProductComment } from '../product-comments/product-comments.model';
       BasketProduct,
       ProductComment,
     ]),
-    forwardRef(() => ProductTypesModule),
     forwardRef(() => AuthModule),
     forwardRef(() => BasketModule),
     FilesModule,

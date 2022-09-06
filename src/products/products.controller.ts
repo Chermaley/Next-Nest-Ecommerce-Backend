@@ -1,12 +1,14 @@
 import { Controller, Get, Param, Query } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { ProductsService } from './products.service';
-import { Product } from './products.model';
+import { ProductsService } from './services/products.service';
+import { Product } from './models/products.model';
+import { ProductType } from "./models/product-types.model";
+import { ProductTypesService } from "./services/product-types.service";
 
 @ApiTags('Продукты')
 @Controller('products')
 export class ProductsController {
-  constructor(private productService: ProductsService) {}
+  constructor(private productService: ProductsService, private productTypesService: ProductTypesService) {}
 
   @ApiOperation({
     summary: 'Получить продукт',
@@ -24,5 +26,14 @@ export class ProductsController {
   @Get()
   getAll(@Query('typeId') typeId: number) {
     return this.productService.getAllProducts(typeId);
+  }
+
+  @ApiOperation({
+    summary: 'Получить все линейки',
+  })
+  @ApiResponse({ status: 200, type: [ProductType] })
+  @Get('types')
+  getAllProductTypes() {
+    return this.productTypesService.getAllProductTypes();
   }
 }

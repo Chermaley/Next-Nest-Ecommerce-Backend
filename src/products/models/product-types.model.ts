@@ -1,6 +1,6 @@
 import { Column, DataType, HasMany, Model, Table } from 'sequelize-typescript';
 import { ApiProperty } from '@nestjs/swagger';
-import { Product } from '../products/products.model';
+import { Product } from './products.model';
 
 interface ProductTypeCreationAttrs {
   name: string;

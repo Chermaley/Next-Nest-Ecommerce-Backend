@@ -1,7 +1,7 @@
 'use strict';
 module.exports = {
   async up(queryInterface, Sequelize) {
-    const models = [
+    return [
       await queryInterface.createTable('Users', {
         id: {
           type: Sequelize.INTEGER,
@@ -254,6 +254,9 @@ module.exports = {
           type: Sequelize.ENUM({ values: ['Open', 'Closed'] }),
           defaultValue: 'Open',
         },
+        type: {
+          type: Sequelize.ENUM({ values: ['Support', 'Cosmetic'] }),
+        },
         creatorId: {
           type: Sequelize.INTEGER,
           references: {
@@ -328,8 +331,35 @@ module.exports = {
           type: Sequelize.DATE,
         },
       }),
+      await queryInterface.createTable('MessageAttachments', {
+        id: {
+          type: Sequelize.INTEGER,
+          unique: true,
+          autoIncrement: true,
+          primaryKey: true,
+        },
+        content: {
+          type: DataType.TEXT,
+          allowNull: false,
+        },
+        type: {
+          type: DataType.STRING,
+          allowNull: false,
+        },
+        name: {
+          type: DataType.STRING,
+          allowNull: false,
+        },
+        messageId: {
+          type: DataType.INTEGER,
+          references: {
+            model: 'Messages',
+            key: 'id',
+          },
+          allowNull: false,
+        },
+      }),
     ];
-    return models;
   },
 
   async down(queryInterface, Sequelize) {
@@ -340,6 +370,7 @@ module.exports = {
     await queryInterface.dropTable('ProductComments');
     await queryInterface.dropTable('Products');
     await queryInterface.dropTable('ProductTypes');
+    await queryInterface.dropTable('MessageAttachments');
     await queryInterface.dropTable('Messages');
     await queryInterface.dropTable('Consultations');
     await queryInterface.removeColumn('Users', 'basketId');

@@ -1,14 +1,14 @@
 import { AdminModuleOptions } from '@adminjs/nestjs';
-import { Product } from '../products/products.model';
+import { Product } from '../products/models/products.model';
 import AdminJS, { flat } from 'adminjs';
-import { ProductType } from '../product-types/product-types.model';
+import { ProductType } from '../products/models/product-types.model';
 import { UserRoles } from '../roles/user-roles.model';
 import { User } from '../users/users.model';
 import { Role } from '../roles/roles.model';
 import { AuthService } from '../auth/auth.service';
 import { FilesService } from '../files/files.service';
 import { locale } from './locale';
-import { ProductComment } from '../product-comments/product-comments.model';
+import { ProductComment } from '../products/models/product-comments.model';
 
 export const configureAdmin = (
   authService: AuthService,

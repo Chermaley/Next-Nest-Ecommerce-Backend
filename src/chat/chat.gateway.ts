@@ -101,7 +101,6 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
   @SubscribeMessage('createConsultation')
   async createConsultation(socket: Socket, userId) {
-    console.log('create');
     const consultation = await this.consultationService.createConsultation(
       userId,
     );
@@ -131,7 +130,6 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
         this.server.to(to).emit('newMessageInConsultation', message);
       }
     }
-    console.log(activeUsersInConsultations.length);
     activeUsersInConsultations.forEach((consultation) => {
       this.server.to(consultation.socketId).emit('newMessage', message);
     });
@@ -159,6 +157,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     @ConnectedSocket() socket: Socket,
     @MessageBody() dto: JoinConsultationDto,
   ) {
+    console.log('join user');
     const activeConsultation = await this.consultationService.joinConsultation(
       socket.id,
       dto,

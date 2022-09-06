@@ -14,24 +14,26 @@ import { BasePropertyProps, useCurrentAdmin } from 'adminjs';
 import { Box } from '@adminjs/design-system';
 import { Message } from '../../../chat/models/message.model';
 
-import * as styled from 'styled-components';
-import { ChatEvent } from './types/Event';
 // import * as styled from 'styled-components';
+import  styled from 'styled-components';
+
+import { ChatEvent } from './types/Event';
 
 const App: React.FC<BasePropertyProps> = () => {
   const [socket, setSocket] = React.useState<Socket>(null);
   const [state, dispatch] = React.useReducer(chatReducer, initialState);
-  const { user } = state;
+  const { user, apiUrl } = state;
   const { activeConsultation } = state;
   const [currentAdmin] = useCurrentAdmin();
   const token = currentAdmin.token;
-  // 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJhZG1pbiIsInJvbGVzIjpbeyJpZCI6MSwidmFsdWUiOiJBRE1JTiIsImRlc2NyaXB0aW9uIjoi0JDQtNC80LjQvdC40YHRgtGA0LDRgtC-0YAiLCJjcmVhdGVkQXQiOiIyMDIyLTA4LTI4VDA0OjQ5OjQ5LjE4OVoiLCJ1cGRhdGVkQXQiOiIyMDIyLTA4LTI4VDA0OjQ5OjQ5LjE4OVoiLCJVc2VyUm9sZXMiOnsiaWQiOjEsInJvbGVJZCI6MSwidXNlcklkIjoxfX0seyJpZCI6MiwidmFsdWUiOiJVU0VSIiwiZGVzY3JpcHRpb24iOiLQn9C-0LvRjNC30L7QstCw0YLQtdC70YwiLCJjcmVhdGVkQXQiOiIyMDIyLTA4LTI4VDA0OjQ5OjQ5LjE5MVoiLCJ1cGRhdGVkQXQiOiIyMDIyLTA4LTI4VDA0OjQ5OjQ5LjE5MVoiLCJVc2VyUm9sZXMiOnsiaWQiOjIsInJvbGVJZCI6MiwidXNlcklkIjoxfX1dLCJpYXQiOjE2NjE2NzUzODMsImV4cCI6MTY2NDM1Mzc4M30.UGc3VS6xgAWxFh6RMBqZ9Jz3ItOxazmFRPXbz57pFuA';
+
   React.useEffect(() => {
     (async function getUser() {
-      const response = await fetch(`/api/users/me`, {
+      const response = await fetch(`${apiUrl}/users/me`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
+        credentials: 'omit'
       });
       const user = await response.json();
       dispatch(setUser(user));
@@ -40,10 +42,9 @@ const App: React.FC<BasePropertyProps> = () => {
 
   React.useEffect(() => {
     const socket = io(`/chat`, {
-      path: '/api/socket.io',
-      transports: ['websocket'],
+      path: `${apiUrl}/socket.io`,
       extraHeaders: {
-        Authorization: `Bearer ${token}`,
+        authorization: `Bearer ${token}`,
       },
     });
     socket.on('connect', () => dispatch(setConnectionEstablished(true)));
@@ -57,6 +58,12 @@ const App: React.FC<BasePropertyProps> = () => {
       dispatch(addMessage(message));
     });
     setSocket(socket);
+    return () => {
+      socket.off('connect');
+      socket.off(ChatEvent.Consultations);
+      socket.off(ChatEvent.Messages);
+      socket.off(ChatEvent.NewMessage);
+    }
   }, []);
 
   return (

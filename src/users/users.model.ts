@@ -1,12 +1,12 @@
 import {
   BelongsToMany,
   Column,
-  DataType,
+  DataType, ForeignKey,
   HasMany,
   HasOne,
   Model,
-  Table,
-} from 'sequelize-typescript';
+  Table
+} from "sequelize-typescript";
 import { ApiProperty } from '@nestjs/swagger';
 import { UserRoles } from '../roles/user-roles.model';
 import { Role } from '../roles/roles.model';
@@ -66,6 +66,9 @@ export class User extends Model<User, UserCreationAttrs> {
 
   @HasOne(() => Basket)
   basket: Basket;
+
+  @ForeignKey(() => Basket)
+  basketId: number;
 
   @Column({
     type: DataType.STRING,

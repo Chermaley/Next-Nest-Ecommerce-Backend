@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { Basket } from './basket.model';
-import { Product } from '../products/products.model';
+import { Product } from '../products/models/products.model';
 import { CreateBasketProductDto } from './dto/create-basket-product.dto';
 import { BasketProduct } from './basket-product.model';
 import { DeleteBasketProductDto } from './dto/delete-basket-product.dto';

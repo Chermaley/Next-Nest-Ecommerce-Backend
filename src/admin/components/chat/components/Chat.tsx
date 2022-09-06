@@ -5,10 +5,9 @@ import { initialState } from '../state/chatReducer';
 import { Message } from '../../../../chat/models/message.model';
 import { setActiveConsultation } from '../state/actions-creators';
 
-import * as styled from 'styled-components';
-
 import { ChatEvent } from '../types/Event';
 // import * as styled from 'styled-components';
+import  styled from 'styled-components';
 
 type ChatProps = {
   socket: Socket;
@@ -30,13 +29,6 @@ const Chat: React.FC<ChatProps> = ({ socket, state, dispatch }) => {
   const { messages, user, activeConsultation } = state;
   const scrollRef = useChatScroll(messages);
 
-  React.useEffect(() => {
-    socket.emit(ChatEvent.JoinConsultation, activeConsultation.id);
-    return () => {
-      socket.emit(ChatEvent.LeaveConsultation, activeConsultation.id);
-    };
-  }, [activeConsultation]);
-
   const sendMessage = (text: string) => {
     if (user) {
       socket.emit(ChatEvent.SendMessage, {
@@ -47,10 +39,12 @@ const Chat: React.FC<ChatProps> = ({ socket, state, dispatch }) => {
     }
   };
 
+
   const closeConsultation = () => {
     socket.emit(ChatEvent.CloseConsultation, activeConsultation.id);
     dispatch(setActiveConsultation(null));
   };
+
 
   return (
     <Box height="100%" variant="white">

@@ -6,7 +6,7 @@ import {
   Table,
 } from 'sequelize-typescript';
 import { Basket } from './basket.model';
-import { Product } from '../products/products.model';
+import { Product } from '../products/models/products.model';
 
 interface BasketProductCreationAttrs {
   name: string;

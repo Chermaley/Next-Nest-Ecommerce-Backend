@@ -10,6 +10,7 @@ import {
   setIsConsultationsFetching,
   setIsConsultationsPagesEndReached,
 } from '../state/actions-creators';
+import { ChatEvent } from "../types/Event";
 
 type ChatListProps = {
   socket: Socket;
@@ -32,8 +33,7 @@ const ChatList: React.FC<ChatListProps> = ({
   const {
     consultations,
     closedConsultations,
-    activeConsultation,
-    isConnectionEstablished,
+    apiUrl,
     currentConsultationsPage,
     isConsultationsFetching,
     isConsultationsPagesEndReached,
@@ -51,17 +51,19 @@ const ChatList: React.FC<ChatListProps> = ({
   }, [isConsultationsFetching]);
 
   const joinConsultation = (consultation: Consultation) => {
+    socket.emit(ChatEvent.JoinConsultation, consultation.id)
     dispatch(setActiveConsultation(consultation));
   };
 
   const getHistory = async () => {
     dispatch(setIsConsultationsFetching(false));
     const response = await fetch(
-      `/api/chat/closedConsultations?pageSize=10&page=${currentConsultationsPage}`,
+      `${apiUrl}/chat/closedConsultations?pageSize=10&page=${currentConsultationsPage}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,
         },
+        credentials: 'omit'
       },
     );
     const closedConsultations = await response.json();
@@ -119,6 +121,7 @@ const ChatList: React.FC<ChatListProps> = ({
         {currentList.map((consultation) => (
           <Box
             flex
+            key={consultation.id}
             variant="grey"
             alignItems="center"
             justifyContent="space-between"

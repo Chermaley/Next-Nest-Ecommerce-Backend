@@ -8,15 +8,13 @@ import { Role } from './roles/roles.model';
 import { UserRoles } from './roles/user-roles.model';
 import { AuthModule } from './auth/auth.module';
 import { ProductsModule } from './products/products.module';
-import { ProductTypesModule } from './product-types/product-types.module';
-import { Product } from './products/products.model';
-import { ProductType } from './product-types/product-types.model';
+import { Product } from './products/models/products.model';
+import { ProductType } from './products/models/product-types.model';
 import { AdminModule } from '@adminjs/nestjs';
 import { FilesModule } from './files/files.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { resolve } from 'path';
 import AdminJS from 'adminjs';
-
 import { Database, Resource } from '@adminjs/sequelize';
 import { AuthService } from './auth/auth.service';
 import { FilesService } from './files/files.service';
@@ -24,13 +22,13 @@ import { configureAdmin } from './admin';
 import { BasketModule } from './basket/basket.module';
 import { Basket } from './basket/basket.model';
 import { BasketProduct } from './basket/basket-product.model';
-import { ProductCommentsModule } from './product-comments/product-comments.module';
-import { ProductComment } from './product-comments/product-comments.model';
+import { ProductComment } from './products/models/product-comments.model';
 import { ChatService } from './chat/chat.service';
 import { ChatModule } from './chat/chat.module';
 import { Consultation } from './chat/models/consultation.model';
 import { ActiveConsultation } from './chat/models/active-consultation.model';
 import { Message } from './chat/models/message.model';
+import { MessageAttachment } from "./chat/models/messageAttachment";
 
 AdminJS.registerAdapter({ Resource, Database });
 
@@ -63,9 +61,9 @@ AdminJS.registerAdapter({ Resource, Database });
         Consultation,
         ActiveConsultation,
         Message,
+        MessageAttachment
       ],
       autoLoadModels: true,
-      // sync: { force: true },
     }),
     AdminModule.createAdminAsync({
       imports: [AuthModule, FilesModule],
@@ -76,10 +74,8 @@ AdminJS.registerAdapter({ Resource, Database });
     RolesModule,
     AuthModule,
     ProductsModule,
-    ProductTypesModule,
     FilesModule,
     BasketModule,
-    ProductCommentsModule,
     ChatModule,
   ],
 })

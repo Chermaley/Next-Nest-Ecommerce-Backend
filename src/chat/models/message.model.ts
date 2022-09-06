@@ -1,13 +1,14 @@
 import {
   Column,
   DataType,
-  ForeignKey,
+  ForeignKey, HasMany,
   Model,
-  Table,
-} from 'sequelize-typescript';
+  Table
+} from "sequelize-typescript";
 import { ApiProperty } from '@nestjs/swagger';
 import { User } from '../../users/users.model';
 import { Consultation } from './consultation.model';
+import { MessageAttachment } from "./messageAttachment";
 
 @Table({ updatedAt: false })
 export class Message extends Model<Message> {
@@ -25,6 +26,9 @@ export class Message extends Model<Message> {
     type: DataType.TEXT,
   })
   message: string;
+
+  @HasMany(() => MessageAttachment)
+  attachments: MessageAttachment[];
 
   @Column({
     type: DataType.INTEGER,

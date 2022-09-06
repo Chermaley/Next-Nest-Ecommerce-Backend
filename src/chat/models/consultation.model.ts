@@ -11,6 +11,11 @@ import { ApiProperty } from '@nestjs/swagger';
 import { User } from '../../users/users.model';
 import { Message } from './message.model';
 
+export enum ConsultationType {
+  Support = 'Support',
+  Cosmetic = 'Cosmetic',
+}
+
 export enum ConsultationStatus {
   Open = 'Open',
   Closed = 'Closed',
@@ -26,6 +31,11 @@ export class Consultation extends Model<Consultation> {
     primaryKey: true,
   })
   id: number;
+
+  @Column({
+    type: DataType.ENUM({ values: Object.keys(ConsultationType) }),
+  })
+  type: ConsultationType;
 
   @Column({
     type: DataType.ENUM({ values: Object.keys(ConsultationStatus) }),

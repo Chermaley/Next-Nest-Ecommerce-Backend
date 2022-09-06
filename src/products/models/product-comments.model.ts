@@ -7,7 +7,7 @@ import {
   Table,
 } from 'sequelize-typescript';
 import { ApiProperty } from '@nestjs/swagger';
-import { Product } from '../products/products.model';
+import { Product } from './products.model';
 
 interface ProductCommentCreationAttrs {
   name: string;

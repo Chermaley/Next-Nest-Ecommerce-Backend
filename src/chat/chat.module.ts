@@ -9,6 +9,7 @@ import { ChatGateway } from './chat.gateway';
 import { User } from '../users/users.model';
 import { UsersModule } from '../users/users.module';
 import { ChatController } from './chat.controller';
+import { MessageAttachment } from "./models/messageAttachment";
 
 @Module({
   controllers: [ChatController],
@@ -19,6 +20,7 @@ import { ChatController } from './chat.controller';
       Consultation,
       ActiveConsultation,
       Message,
+      MessageAttachment,
       User,
     ]),
   ],
