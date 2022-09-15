@@ -1,12 +1,12 @@
 import {
   Column,
-  DataType, ForeignKey,
+  DataType,
+  ForeignKey,
   Model,
-  Table
-} from "sequelize-typescript";
+  Table,
+} from 'sequelize-typescript';
 import { ApiProperty } from '@nestjs/swagger';
-import { Message } from "./message.model";
-
+import { Message } from './message.model';
 
 @Table({ updatedAt: false, createdAt: false })
 export class MessageAttachment extends Model<MessageAttachment> {
@@ -21,21 +21,21 @@ export class MessageAttachment extends Model<MessageAttachment> {
 
   @Column({
     type: DataType.TEXT,
-    allowNull: false
+    allowNull: false,
   })
-  content: string
+  content: string;
 
   @Column({
     type: DataType.STRING,
-    allowNull: false
+    allowNull: false,
   })
-  type: string
+  type: string;
 
   @Column({
     type: DataType.STRING,
-    allowNull: false
+    allowNull: false,
   })
-  name: string
+  name: string;
 
   @ForeignKey(() => Message)
   @Column({

@@ -1,7 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { User } from '../../users/users.model';
 import { InjectModel } from '@nestjs/sequelize';
-import { Consultation, ConsultationStatus } from '../models/consultation.model';
+import {
+  Consultation,
+  ConsultationStatus,
+  ConsultationType,
+} from '../models/consultation.model';
 import { Message } from '../models/message.model';
 import { ActiveConsultation } from '../models/active-consultation.model';
 import { JoinConsultationDto } from '../dto/join-consultation.dto';
@@ -59,16 +63,14 @@ export class ConsultationService {
 
   async getOpenConsultations(
     userId?: number,
+    type?: ConsultationType,
   ): Promise<Consultation[] | undefined> {
+    console.log(';dsfs');
     return this.consultationRepository.findAll({
-      where: { status: ConsultationStatus.Open },
+      where: { status: ConsultationStatus.Open, type: type ?? null },
       include: {
         model: User,
-        where: userId
-          ? {
-              id: userId,
-            }
-          : {},
+        where: { id: userId ?? null },
       },
     });
   }
@@ -76,12 +78,16 @@ export class ConsultationService {
   async createConsultation(
     dto: CreateConsultationDto,
   ): Promise<Consultation | undefined> {
+    console.log(dto, 'user');
     const user = await this.userRepository.findByPk(dto.creatorId, {
       include: { model: Consultation },
     });
     // Only one consultation per user
-    console.log(user, 'user');
-    const openConsultations = await this.getOpenConsultations(user.id);
+    const openConsultations = await this.getOpenConsultations(
+      user.id,
+      dto.type,
+    );
+    console.log(openConsultations);
     if (openConsultations?.length === 0) {
       const consultation = await this.consultationRepository.create({
         creator: user,

@@ -15,6 +15,8 @@ import { JoinConsultationDto } from './dto/join-consultation.dto';
 import { CreateMessageDto } from './dto/create-message.dto';
 import { UseGuards } from '@nestjs/common';
 import { RolesGuard } from '../roles/roles.guard';
+import { CreateConsultationDto } from './dto/create-consultation.dto';
+import { ConsultationType } from './models/consultation.model';
 
 const getTokenFromSocket = (socket: Socket): string | null => {
   try {
@@ -69,19 +71,26 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
       const isConsult = user.roles.some((role) => role.value === 'ADMIN');
 
-      if (!isConsult) {
-        return await this.sendConsultations(socket, [socket.id], user.id);
+      if (isConsult) {
+        socket.join('consults');
       }
-      socket.join('consults');
-      return await this.sendConsultations(socket, ['consults']);
     } catch {
       this.handleDisconnect(socket);
     }
   }
 
-  async sendConsultations(socket: Socket, to: string[], userId?: number) {
+  async sendConsultations({
+    userId,
+    type,
+    to,
+  }: {
+    to: string[];
+    userId?: number;
+    type: ConsultationType;
+  }) {
     const consultations = await this.consultationService.getOpenConsultations(
       userId,
+      type,
     );
     this.server.to(to).emit('consultations', consultations);
   }
@@ -100,12 +109,11 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   }
 
   @SubscribeMessage('createConsultation')
-  async createConsultation(socket: Socket, userId) {
-    const consultation = await this.consultationService.createConsultation(
-      userId,
-    );
+  async createConsultation(socket: Socket, dto: CreateConsultationDto) {
+    console.log('dsfgdsfds', dto);
+    const consultation = await this.consultationService.createConsultation(dto);
     if (consultation) {
-      await this.sendConsultations(socket, ['consults']);
+      await this.sendConsultations({ to: ['consults'], type: dto.type });
       this.server.to(socket.id).emit('activeConsultation', consultation);
     }
   }
@@ -178,8 +186,11 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     this.server
       .to([creator.chatSocketId, socket.id])
       .emit('consultationClosed');
-    await this.sendConsultations(socket, [creator.chatSocketId], creator.id);
-    await this.sendConsultations(socket, ['consults']);
+    await this.sendConsultations({
+      to: [creator.chatSocketId],
+      userId: creator.id,
+      type: ConsultationType.Support,
+    });
   }
 
   @SubscribeMessage('leaveConsultation')

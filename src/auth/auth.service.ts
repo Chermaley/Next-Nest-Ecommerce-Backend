@@ -14,7 +14,6 @@ import { Tokens } from './types';
 import { CurrentAdmin } from 'adminjs';
 import { User } from '../users/users.model';
 import { util } from 'prettier';
-import hasSpaces = util.hasSpaces;
 
 @Injectable()
 export class AuthService {

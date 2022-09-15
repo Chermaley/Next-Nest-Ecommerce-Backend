@@ -10,7 +10,7 @@ import { AuthModule } from './auth/auth.module';
 import { ProductsModule } from './products/products.module';
 import { Product } from './products/models/products.model';
 import { ProductType } from './products/models/product-types.model';
-import { AdminModule } from '@adminjs/nestjs';
+import { AdminModule, AdminModuleOptions } from '@adminjs/nestjs';
 import { FilesModule } from './files/files.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { resolve } from 'path';
@@ -28,7 +28,9 @@ import { ChatModule } from './chat/chat.module';
 import { Consultation } from './chat/models/consultation.model';
 import { ActiveConsultation } from './chat/models/active-consultation.model';
 import { Message } from './chat/models/message.model';
-import { MessageAttachment } from "./chat/models/messageAttachment";
+import { MessageAttachment } from './chat/models/messageAttachment';
+import { AmoCrmModule } from './amo-crm/amo-crm.module';
+import { AmoCrmAuthToken } from './amo-crm/models/amo-crm-auth-token.model';
 
 AdminJS.registerAdapter({ Resource, Database });
 
@@ -61,7 +63,8 @@ AdminJS.registerAdapter({ Resource, Database });
         Consultation,
         ActiveConsultation,
         Message,
-        MessageAttachment
+        MessageAttachment,
+        AmoCrmAuthToken,
       ],
       autoLoadModels: true,
     }),
@@ -70,6 +73,7 @@ AdminJS.registerAdapter({ Resource, Database });
       inject: [AuthService, FilesService],
       useFactory: configureAdmin,
     }),
+    AmoCrmModule,
     UsersModule,
     RolesModule,
     AuthModule,

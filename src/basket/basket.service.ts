@@ -5,6 +5,7 @@ import { Product } from '../products/models/products.model';
 import { CreateBasketProductDto } from './dto/create-basket-product.dto';
 import { BasketProduct } from './basket-product.model';
 import { DeleteBasketProductDto } from './dto/delete-basket-product.dto';
+import { AmoCrmService } from '../amo-crm/amo-crm.service';
 
 @Injectable()
 export class BasketService {
@@ -13,6 +14,7 @@ export class BasketService {
     @InjectModel(Product) private productRepository: typeof Product,
     @InjectModel(BasketProduct)
     private basketProductRepository: typeof BasketProduct,
+    private amoCrmService: AmoCrmService,
   ) {}
 
   async getBasketByUserId(userId) {
@@ -61,6 +63,10 @@ export class BasketService {
     }
 
     return await this.getBasketByUserId(userId);
+  }
+
+  async createOrder() {
+    this.amoCrmService.createLead('newOrder');
   }
 
   async create() {

@@ -339,19 +339,19 @@ module.exports = {
           primaryKey: true,
         },
         content: {
-          type: DataType.TEXT,
+          type: Sequelize.TEXT,
           allowNull: false,
         },
         type: {
-          type: DataType.STRING,
+          type: Sequelize.STRING,
           allowNull: false,
         },
         name: {
-          type: DataType.STRING,
+          type: Sequelize.STRING,
           allowNull: false,
         },
         messageId: {
-          type: DataType.INTEGER,
+          type: Sequelize.INTEGER,
           references: {
             model: 'Messages',
             key: 'id',
@@ -359,10 +359,50 @@ module.exports = {
           allowNull: false,
         },
       }),
+      await queryInterface.createTable('MessageAttachments', {
+        id: {
+          type: Sequelize.INTEGER,
+          unique: true,
+          autoIncrement: true,
+          primaryKey: true,
+        },
+        content: {
+          type: Sequelize.TEXT,
+          allowNull: false,
+        },
+        type: {
+          type: Sequelize.STRING,
+          allowNull: false,
+        },
+        name: {
+          type: Sequelize.STRING,
+          allowNull: false,
+        },
+        messageId: {
+          type: Sequelize.INTEGER,
+          references: {
+            model: 'Messages',
+            key: 'id',
+          },
+          allowNull: false,
+        },
+      }),
+      await queryInterface.createTable('AmoCrmAuthTokens', {
+        id: {
+          type: Sequelize.INTEGER,
+          unique: true,
+          autoIncrement: true,
+          primaryKey: true,
+        },
+        token: {
+          type: Sequelize.TEXT,
+          allowNull: false,
+        },
+      }),
     ];
   },
 
-  async down(queryInterface, Sequelize) {
+  async down(queryInterface) {
     await queryInterface.dropTable('UserRoles');
     await queryInterface.dropTable('Roles');
     await queryInterface.dropTable('BasketProducts');
@@ -376,5 +416,6 @@ module.exports = {
     await queryInterface.removeColumn('Users', 'basketId');
     await queryInterface.dropTable('Baskets');
     await queryInterface.dropTable('Users');
+    await queryInterface.dropTable('AmoCrmAuthTokens');
   },
 };

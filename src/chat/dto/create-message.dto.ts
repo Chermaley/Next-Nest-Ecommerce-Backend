@@ -1,4 +1,4 @@
-import { MessageAttachment } from "../models/messageAttachment";
+import { MessageAttachment } from '../models/messageAttachment';
 
 export class CreateMessageDto {
   readonly message: string;
