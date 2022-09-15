@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { AmoCrmService } from './amo-crm.service';
-import { AmoCrmAuthToken } from './models/amo-crm-auth-token.model';
+import { AmoCrmAuthToken } from './amo-crm-auth-token.model';
 import { SequelizeModule } from '@nestjs/sequelize';
 
 @Module({

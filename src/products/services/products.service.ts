@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { Product } from '../models/products.model';
+import { Op } from 'sequelize';
 
 @Injectable()
 export class ProductsService {
@@ -14,18 +15,28 @@ export class ProductsService {
     });
   }
 
-  async getAllProducts(typeId?: number, limit = 10, page = 1) {
+  async getAllProducts({
+    term,
+    typeId,
+    limit = 10,
+    page = 1,
+  }: {
+    term?: string;
+    typeId?: number;
+    limit?: number;
+    page?: number;
+  }) {
     const offset = page * limit - limit;
-    let products;
 
-    products = await this.productRepository.findAll({
-      include: { all: true },
-      limit,
-      offset,
-    });
+    if (typeof term === 'string') {
+      console.log(term);
+      return await this.productRepository.findAll({
+        where: { ...(term.length ? { name: { [Op.like]: `%${term}%` } } : {}) },
+      });
+    }
 
     if (typeId) {
-      products = await this.productRepository.findAll({
+      return await this.productRepository.findAll({
         where: { typeId: typeId },
         include: { all: true },
         limit,
@@ -33,6 +44,10 @@ export class ProductsService {
       });
     }
 
-    return products;
+    return await this.productRepository.findAll({
+      include: { all: true },
+      limit,
+      offset,
+    });
   }
 }
