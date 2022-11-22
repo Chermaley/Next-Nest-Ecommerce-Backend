@@ -24,11 +24,6 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   async localSignIn(@Body() dto: CreateUserDto, @Response() res) {
     const tokens = await this.authService.localSignIn(dto);
-    res.cookie('tokens', JSON.stringify(tokens), {
-      expires: new Date(new Date().getTime() + 1000 * 60 * 60 * 24 * 7),
-      sameSite: 'strict',
-      httpOnly: true,
-    });
     res.send(tokens);
   }
 
@@ -37,11 +32,6 @@ export class AuthController {
   @UsePipes(ValidationPipe)
   async localSignUp(@Body() dto: CreateUserDto, @Response() res) {
     const tokens = await this.authService.localSignUp(dto);
-    res.cookie('tokens', JSON.stringify(tokens), {
-      expires: new Date(new Date().getTime() + 1000 * 60 * 60 * 24 * 7),
-      sameSite: 'strict',
-      httpOnly: true,
-    });
     res.send(tokens);
   }
 
@@ -63,11 +53,6 @@ export class AuthController {
     @Response() res,
   ) {
     const tokens = await this.authService.refreshTokens(userId, refreshToken);
-    res.cookie('tokens', JSON.stringify(tokens), {
-      expires: new Date(new Date().getTime() + 1000 * 60 * 60 * 24 * 7),
-      sameSite: 'strict',
-      httpOnly: true,
-    });
     res.send(tokens);
   }
 }

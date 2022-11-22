@@ -9,7 +9,11 @@ import { AtStrategy, RtStrategy } from './strategies';
 @Module({
   controllers: [AuthController],
   providers: [AuthService, AtStrategy, RtStrategy],
-  imports: [forwardRef(() => UsersModule), RolesModule, JwtModule.register({})],
+  imports: [
+    forwardRef(() => UsersModule),
+    RolesModule,
+    JwtModule.register({ signOptions: { expiresIn: '10d' } }),
+  ],
   exports: [AuthService, JwtModule],
 })
 export class AuthModule {}

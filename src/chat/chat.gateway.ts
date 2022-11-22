@@ -18,21 +18,6 @@ import { RolesGuard } from '../roles/roles.guard';
 import { CreateConsultationDto } from './dto/create-consultation.dto';
 import { ConsultationType } from './models/consultation.model';
 
-const getTokenFromSocket = (socket: Socket): string | null => {
-  try {
-    if (socket.handshake.headers.authorization) {
-      return socket.handshake.headers.authorization.split(' ')[1];
-    }
-    const tokensJson = socket.handshake.headers.cookie
-      .split('; ')
-      .find((cookie: string) => cookie.startsWith('tokens'))
-      .split('=')[1];
-    return JSON.parse(decodeURIComponent(tokensJson)).accessToken;
-  } catch {
-    return null;
-  }
-};
-
 @WebSocketGateway({
   namespace: 'chat',
   cors: {
@@ -57,24 +42,23 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
   async handleConnection(socket: Socket) {
     try {
-      const accessToken = getTokenFromSocket(socket);
-
+      const accessToken = socket.handshake.auth.token;
       const user = await this.authService.getUserFromJwt(accessToken);
-
       if (!user) {
         return this.handleDisconnect(socket);
       }
-
       await this.userService.updateUserById(user.id, {
         chatSocketId: socket.id,
       });
-
       const isConsult = user.roles.some((role) => role.value === 'ADMIN');
-
       if (isConsult) {
         socket.join('consults');
+        await this.sendConsultations({
+          type: ConsultationType.Cosmetic,
+          to: ['consults'],
+        });
       }
-    } catch {
+    } catch (e) {
       this.handleDisconnect(socket);
     }
   }
@@ -98,7 +82,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   async handleDisconnect(socket: Socket) {
     socket.leave('consults');
     await this.consultationService.leaveConsultation(socket.id);
-    const accessToken = getTokenFromSocket(socket);
+    const accessToken = socket.handshake.auth.token;
     if (!accessToken) return;
     const user = await this.authService.getUserFromJwt(accessToken);
     if (user) {
@@ -110,10 +94,12 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
   @SubscribeMessage('createConsultation')
   async createConsultation(socket: Socket, dto: CreateConsultationDto) {
-    console.log('dsfgdsfds', dto);
     const consultation = await this.consultationService.createConsultation(dto);
     if (consultation) {
-      await this.sendConsultations({ to: ['consults'], type: dto.type });
+      await this.sendConsultations({
+        to: ['consults', socket.id],
+        type: dto.type,
+      });
       this.server.to(socket.id).emit('activeConsultation', consultation);
     }
   }
@@ -148,7 +134,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     @ConnectedSocket() socket: Socket,
     @MessageBody() consultationId: number,
   ) {
-    const accessToken = getTokenFromSocket(socket);
+    const accessToken = socket.handshake.auth.token;
     const user = await this.authService.getUserFromJwt(accessToken);
     const activeConsultation = await this.consultationService.joinConsultation(
       socket.id,
@@ -165,7 +151,6 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     @ConnectedSocket() socket: Socket,
     @MessageBody() dto: JoinConsultationDto,
   ) {
-    console.log('join user');
     const activeConsultation = await this.consultationService.joinConsultation(
       socket.id,
       dto,
@@ -185,7 +170,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     const creator = await this.userService.getUserById(consultation.creatorId);
     this.server
       .to([creator.chatSocketId, socket.id])
-      .emit('consultationClosed');
+      .emit('consultationClosed', consultation);
     await this.sendConsultations({
       to: [creator.chatSocketId],
       userId: creator.id,

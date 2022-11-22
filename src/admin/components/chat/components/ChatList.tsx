@@ -10,7 +10,7 @@ import {
   setIsConsultationsFetching,
   setIsConsultationsPagesEndReached,
 } from '../state/actions-creators';
-import { ChatEvent } from "../types/Event";
+import { ChatEvent } from '../types/Event';
 
 type ChatListProps = {
   socket: Socket;
@@ -51,7 +51,7 @@ const ChatList: React.FC<ChatListProps> = ({
   }, [isConsultationsFetching]);
 
   const joinConsultation = (consultation: Consultation) => {
-    socket.emit(ChatEvent.JoinConsultation, consultation.id)
+    socket.emit(ChatEvent.JoinConsultation, consultation.id);
     dispatch(setActiveConsultation(consultation));
   };
 
@@ -63,7 +63,6 @@ const ChatList: React.FC<ChatListProps> = ({
         headers: {
           Authorization: `Bearer ${token}`,
         },
-        credentials: 'omit'
       },
     );
     const closedConsultations = await response.json();
@@ -129,7 +128,7 @@ const ChatList: React.FC<ChatListProps> = ({
             height={70}
           >
             <Text fontSize={15}>
-              Консультация с {consultation.creator.email}
+              Консультация с {consultation.creator?.email}
             </Text>
             <Box onClick={() => joinConsultation(consultation)}>
               <svg

@@ -13,7 +13,6 @@ import { JwtService } from '@nestjs/jwt';
 import { Tokens } from './types';
 import { CurrentAdmin } from 'adminjs';
 import { User } from '../users/users.model';
-import { util } from 'prettier';
 
 @Injectable()
 export class AuthService {

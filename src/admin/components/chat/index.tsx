@@ -1,4 +1,4 @@
-import * as React from 'react';                                                                                                                                           
+import * as React from 'react';
 import { io, Socket } from 'socket.io-client';
 import chatReducer, { initialState } from './state/chatReducer';
 import {
@@ -15,7 +15,7 @@ import { Box } from '@adminjs/design-system';
 import { Message } from '../../../chat/models/message.model';
 
 // import * as styled from 'styled-components';
-import  styled from 'styled-components';
+import styled from 'styled-components';
 
 import { ChatEvent } from './types/Event';
 
@@ -33,7 +33,7 @@ const App: React.FC<BasePropertyProps> = () => {
         headers: {
           Authorization: `Bearer ${token}`,
         },
-        credentials: 'omit'
+        credentials: 'omit',
       });
       const user = await response.json();
       dispatch(setUser(user));
@@ -43,9 +43,7 @@ const App: React.FC<BasePropertyProps> = () => {
   React.useEffect(() => {
     const socket = io(`/chat`, {
       path: `${apiUrl}/socket.io`,
-      extraHeaders: {
-        authorization: `Bearer ${token}`,
-      },
+      auth: { token },
     });
     socket.on('connect', () => dispatch(setConnectionEstablished(true)));
     socket.on(ChatEvent.Consultations, (consultations) => {
@@ -63,7 +61,7 @@ const App: React.FC<BasePropertyProps> = () => {
       socket.off(ChatEvent.Consultations);
       socket.off(ChatEvent.Messages);
       socket.off(ChatEvent.NewMessage);
-    }
+    };
   }, []);
 
   return (

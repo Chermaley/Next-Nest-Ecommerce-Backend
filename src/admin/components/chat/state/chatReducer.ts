@@ -74,7 +74,7 @@ export const initialState = {
   isConsultationsFetching: false,
   currentConsultationsPage: 0,
   isConsultationsPagesEndReached: false,
-  apiUrl: process.env.NODE_ENV !== 'development' ? '/api' : ''
+  apiUrl: process.env.NODE_ENV !== 'development' ? '/api' : '',
 };
 
 export type State = typeof initialState;

@@ -17,7 +17,7 @@ export class ProductsController {
     summary: 'Получить продукт',
   })
   @ApiResponse({ status: 200, type: Product })
-  @Get('/:id')
+  @Get('/p/:id')
   getProduct(@Param('id') id: number) {
     return this.productService.getProduct(id);
   }
@@ -35,7 +35,7 @@ export class ProductsController {
     summary: 'Получить все линейки',
   })
   @ApiResponse({ status: 200, type: [ProductType] })
-  @Get('types')
+  @Get('/types')
   getAllProductTypes() {
     return this.productTypesService.getAllProductTypes();
   }

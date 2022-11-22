@@ -45,17 +45,16 @@ export class ConsultationService {
     const offset = page * pageSize;
     const limit = pageSize;
     const isConsult = roles.some((role) => roles.includes(role));
+    const include = !isConsult && {
+      model: User,
+      where: {
+        id: userId,
+      },
+    };
     return this.consultationRepository.findAll({
       where: { status: ConsultationStatus.Closed },
       order: ['updatedAt'],
-      include: !isConsult
-        ? {
-            model: User,
-            where: {
-              id: userId,
-            },
-          }
-        : { model: User },
+      include,
       offset,
       limit,
     });
@@ -65,20 +64,22 @@ export class ConsultationService {
     userId?: number,
     type?: ConsultationType,
   ): Promise<Consultation[] | undefined> {
-    console.log(';dsfs');
+    const include = userId && {
+      model: User,
+      where: { id: userId ?? null },
+    };
     return this.consultationRepository.findAll({
-      where: { status: ConsultationStatus.Open, type: type ?? null },
-      include: {
-        model: User,
-        where: { id: userId ?? null },
+      where: {
+        status: ConsultationStatus.Open,
+        type: type ?? ConsultationType.Cosmetic,
       },
+      include,
     });
   }
 
   async createConsultation(
     dto: CreateConsultationDto,
   ): Promise<Consultation | undefined> {
-    console.log(dto, 'user');
     const user = await this.userRepository.findByPk(dto.creatorId, {
       include: { model: Consultation },
     });
@@ -87,7 +88,6 @@ export class ConsultationService {
       user.id,
       dto.type,
     );
-    console.log(openConsultations);
     if (openConsultations?.length === 0) {
       const consultation = await this.consultationRepository.create({
         creator: user,
@@ -145,12 +145,14 @@ export class ConsultationService {
   async createMessage(dto: CreateMessageDto): Promise<Message> {
     let { attachments, ...restDto } = dto;
     const message = await this.messageRepository.create(restDto);
-    attachments = await this.messageAttachmentRepository.bulkCreate(
-      attachments.map((attachment) => ({
-        ...attachment,
-        messageId: message.id,
-      })),
-    );
+    if (attachments?.length) {
+      attachments = await this.messageAttachmentRepository.bulkCreate(
+        attachments.map((attachment) => ({
+          ...attachment,
+          messageId: message.id,
+        })),
+      );
+    }
     await message.update('attachments', attachments);
     return message.reload({ include: { model: MessageAttachment } });
   }
