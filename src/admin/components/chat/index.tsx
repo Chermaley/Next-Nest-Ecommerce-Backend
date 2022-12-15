@@ -1,23 +1,17 @@
 import * as React from 'react';
-import { io, Socket } from 'socket.io-client';
-import chatReducer, { initialState } from './state/chatReducer';
-import {
-  addMessage,
-  setConnectionEstablished,
-  setConsultations,
-  setMessages,
-  setUser,
-} from './state/actions-creators';
+import {io, Socket} from 'socket.io-client';
+import chatReducer, {initialState} from './state/chatReducer';
+import {addMessage, setConnectionEstablished, setConsultations, setMessages, setUser,} from './state/actions-creators';
 import Chat from './components/Chat';
 import ChatList from './components/ChatList';
-import { BasePropertyProps, useCurrentAdmin } from 'adminjs';
-import { Box } from '@adminjs/design-system';
-import { Message } from '../../../chat/models/message.model';
+import {BasePropertyProps, useCurrentAdmin} from 'adminjs';
+import {Box} from '@adminjs/design-system';
+import {Message} from '../../../chat/models/message.model';
 
 // import * as styled from 'styled-components';
 import styled from 'styled-components';
 
-import { ChatEvent } from './types/Event';
+import {ChatEvent} from './types/Event';
 
 const App: React.FC<BasePropertyProps> = () => {
   const [socket, setSocket] = React.useState<Socket>(null);

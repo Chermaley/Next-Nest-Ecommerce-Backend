@@ -1,12 +1,6 @@
-import {
-  Column,
-  DataType,
-  ForeignKey,
-  Model,
-  Table,
-} from 'sequelize-typescript';
-import { ApiProperty } from '@nestjs/swagger';
-import { Message } from './message.model';
+import {Column, DataType, ForeignKey, Model, Table,} from 'sequelize-typescript';
+import {ApiProperty} from '@nestjs/swagger';
+import {Message} from './message.model';
 
 @Table({ updatedAt: false, createdAt: false })
 export class MessageAttachment extends Model<MessageAttachment> {

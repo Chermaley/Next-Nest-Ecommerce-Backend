@@ -1,6 +1,6 @@
-import { Consultation } from '../../../../chat/models/consultation.model';
-import { Message } from '../../../../chat/models/message.model';
-import { User } from '../../../../users/users.model';
+import {Consultation} from '../../../../chat/models/consultation.model';
+import {Message} from '../../../../chat/models/message.model';
+import {User} from '../../../../users/users.model';
 
 const chatReducer = (state: State, action: any) => {
   switch (action.type) {

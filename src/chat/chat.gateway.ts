@@ -7,16 +7,16 @@ import {
   WebSocketGateway,
   WebSocketServer,
 } from '@nestjs/websockets';
-import { Server, Socket } from 'socket.io';
-import { AuthService } from '../auth/auth.service';
-import { UsersService } from '../users/users.service';
-import { ConsultationService } from './services/consultation.service';
-import { JoinConsultationDto } from './dto/join-consultation.dto';
-import { CreateMessageDto } from './dto/create-message.dto';
-import { UseGuards } from '@nestjs/common';
-import { RolesGuard } from '../roles/roles.guard';
-import { CreateConsultationDto } from './dto/create-consultation.dto';
-import { ConsultationType } from './models/consultation.model';
+import {Server, Socket} from 'socket.io';
+import {AuthService} from '../auth/auth.service';
+import {UsersService} from '../users/users.service';
+import {ConsultationService} from './services/consultation.service';
+import {JoinConsultationDto} from './dto/join-consultation.dto';
+import {CreateMessageDto} from './dto/create-message.dto';
+import {UseGuards} from '@nestjs/common';
+import {RolesGuard} from '../roles/roles.guard';
+import {CreateConsultationDto} from './dto/create-consultation.dto';
+import {ConsultationType} from './models/consultation.model';
 
 @WebSocketGateway({
   namespace: 'chat',
@@ -124,8 +124,9 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
         this.server.to(to).emit('newMessageInConsultation', message);
       }
     }
-    activeUsersInConsultations.forEach((consultation) => {
-      this.server.to(consultation.socketId).emit('newMessage', message);
+    console.log(activeUsersInConsultations);
+    activeUsersInConsultations.forEach((user) => {
+      this.server.to(user.socketId).emit('newMessage', message);
     });
   }
 
@@ -179,7 +180,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   }
 
   @SubscribeMessage('leaveConsultation')
-  leaveConversation(socket: Socket) {
-    this.consultationService.leaveConsultation(socket.id);
+  async leaveConversation(socket: Socket) {
+    await this.consultationService.leaveConsultation(socket.id);
   }
 }

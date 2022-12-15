@@ -1,9 +1,9 @@
-import { Controller, Get, UseGuards } from '@nestjs/common';
-import { UsersService } from './users.service';
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { User } from './users.model';
-import { AtGuard } from '../common/guards';
-import { GetCurrentUserId } from '../common/decorators';
+import {Controller, Get, UseGuards} from '@nestjs/common';
+import {UsersService} from './users.service';
+import {ApiOperation, ApiResponse, ApiTags} from '@nestjs/swagger';
+import {User} from './users.model';
+import {AtGuard} from '../common/guards';
+import {GetCurrentUserId} from '../common/decorators';
 
 @ApiTags('Пользователи')
 @Controller('users')

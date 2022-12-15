@@ -1,7 +1,7 @@
-import { Injectable, OnModuleInit } from '@nestjs/common';
-import { InjectModel } from '@nestjs/sequelize';
-import { AmoCrmAuthToken } from './amo-crm-auth-token.model';
-import { Client } from 'amocrm-js';
+import {Injectable, OnModuleInit} from '@nestjs/common';
+import {InjectModel} from '@nestjs/sequelize';
+import {AmoCrmAuthToken} from './amo-crm-auth-token.model';
+import {Client} from 'amocrm-js';
 
 @Injectable()
 export class AmoCrmService implements OnModuleInit {

@@ -1,5 +1,4 @@
 import {
-  BelongsTo,
   Column,
   DataType,
   ForeignKey,
@@ -9,15 +8,8 @@ import {
 import { ApiProperty } from '@nestjs/swagger';
 import { Product } from './products.model';
 
-interface ProductCommentCreationAttrs {
-  name: string;
-}
-
 @Table({})
-export class ProductComment extends Model<
-  ProductComment,
-  ProductCommentCreationAttrs
-> {
+export class ProductComment extends Model<ProductComment> {
   @ApiProperty({ example: '1', description: 'Уникальный id' })
   @Column({
     type: DataType.INTEGER,
@@ -46,6 +38,15 @@ export class ProductComment extends Model<
     allowNull: false,
   })
   text: string;
+
+  @ApiProperty({
+    example: '4.5',
+    description: 'Оценка продукта.',
+  })
+  @Column({
+    type: DataType.FLOAT,
+  })
+  rating: number;
 
   @ForeignKey(() => Product)
   productId: number;

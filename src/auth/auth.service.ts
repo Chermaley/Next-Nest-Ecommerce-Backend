@@ -1,18 +1,12 @@
-import {
-  ForbiddenException,
-  HttpException,
-  HttpStatus,
-  Injectable,
-  UnauthorizedException,
-} from '@nestjs/common';
-import { CreateUserDto } from '../users/dto/create-user.dto';
-import { UsersService } from '../users/users.service';
+import {ForbiddenException, HttpException, HttpStatus, Injectable, UnauthorizedException,} from '@nestjs/common';
+import {CreateUserDto} from '../users/dto/create-user.dto';
+import {UsersService} from '../users/users.service';
 import * as argon from 'argon2';
-import { RolesService } from '../roles/roles.service';
-import { JwtService } from '@nestjs/jwt';
-import { Tokens } from './types';
-import { CurrentAdmin } from 'adminjs';
-import { User } from '../users/users.model';
+import {RolesService} from '../roles/roles.service';
+import {JwtService} from '@nestjs/jwt';
+import {Tokens} from './types';
+import {CurrentAdmin} from 'adminjs';
+import {User} from '../users/users.model';
 
 @Injectable()
 export class AuthService {

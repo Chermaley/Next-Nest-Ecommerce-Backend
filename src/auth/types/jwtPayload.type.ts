@@ -1,4 +1,4 @@
-import { Role } from '../../roles/roles.model';
+import {Role} from '../../roles/roles.model';
 
 export type JwtPayload = {
   id: number;

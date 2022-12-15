@@ -7,6 +7,7 @@ import {
 } from 'sequelize-typescript';
 import { Basket } from './basket.model';
 import { Product } from '../products/models/products.model';
+import { Order } from '../order/models/order.model';
 
 interface BasketProductCreationAttrs {
   name: string;
@@ -52,6 +53,7 @@ export class BasketProduct extends Model<
 
   @ForeignKey(() => Basket)
   @Column({
+    allowNull: true,
     type: DataType.INTEGER,
   })
   basketId: number;
@@ -61,4 +63,11 @@ export class BasketProduct extends Model<
     type: DataType.INTEGER,
   })
   productId: number;
+
+  @ForeignKey(() => Order)
+  @Column({
+    allowNull: true,
+    type: DataType.INTEGER,
+  })
+  orderId: number;
 }

@@ -58,6 +58,30 @@ module.exports = {
           allowNull: false,
         },
       }),
+      await queryInterface.createTable('Orders', {
+        id: {
+          type: Sequelize.INTEGER,
+          unique: true,
+          autoIncrement: true,
+          primaryKey: true,
+        },
+        amount: {
+          type: Sequelize.INTEGER,
+        },
+        status: {
+          type: Sequelize.ENUM({
+            values: ['Pending', 'Confirmed', 'Delivered', 'Rejected'],
+          }),
+          defaultValue: 'Pending',
+        },
+        userId: {
+          type: Sequelize.INTEGER,
+          references: {
+            model: 'Users',
+            key: 'id',
+          },
+        },
+      }),
       await queryInterface.addColumn('Users', 'basketId', {
         type: Sequelize.INTEGER,
         references: {
@@ -202,6 +226,14 @@ module.exports = {
             model: 'Baskets',
             key: 'id',
           },
+        },
+        orderId: {
+          type: Sequelize.INTEGER,
+          references: {
+            model: 'Orders',
+            key: 'id',
+          },
+          allowNull: true,
         },
         productId: {
           type: Sequelize.INTEGER,
@@ -413,9 +445,10 @@ module.exports = {
     await queryInterface.dropTable('MessageAttachments');
     await queryInterface.dropTable('Messages');
     await queryInterface.dropTable('Consultations');
-    await queryInterface.removeColumn('Users', 'basketId');
-    await queryInterface.dropTable('Baskets');
+    await queryInterface.dropTable('Orders');
+    await queryInterface.removeColumn('Baskets', 'userId');
     await queryInterface.dropTable('Users');
+    await queryInterface.dropTable('Baskets');
     await queryInterface.dropTable('AmoCrmAuthTokens');
   },
 };

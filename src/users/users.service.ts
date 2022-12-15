@@ -1,10 +1,10 @@
-import { Injectable } from '@nestjs/common';
-import { InjectModel } from '@nestjs/sequelize';
-import { CreateUserDto } from './dto/create-user.dto';
-import { User } from './users.model';
-import { RolesService } from '../roles/roles.service';
-import { Role } from '../roles/roles.model';
-import { Basket } from '../basket/basket.model';
+import {Injectable} from '@nestjs/common';
+import {InjectModel} from '@nestjs/sequelize';
+import {CreateUserDto} from './dto/create-user.dto';
+import {User} from './users.model';
+import {RolesService} from '../roles/roles.service';
+import {Role} from '../roles/roles.model';
+import {Basket} from '../basket/basket.model';
 
 @Injectable()
 export class UsersService {

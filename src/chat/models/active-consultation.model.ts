@@ -1,13 +1,7 @@
-import {
-  Column,
-  DataType,
-  ForeignKey,
-  Model,
-  Table,
-} from 'sequelize-typescript';
-import { ApiProperty } from '@nestjs/swagger';
-import { User } from '../../users/users.model';
-import { Consultation } from './consultation.model';
+import {Column, DataType, ForeignKey, Model, Table,} from 'sequelize-typescript';
+import {ApiProperty} from '@nestjs/swagger';
+import {User} from '../../users/users.model';
+import {Consultation} from './consultation.model';
 
 @Table({ createdAt: false })
 export class ActiveConsultation extends Model<ActiveConsultation> {

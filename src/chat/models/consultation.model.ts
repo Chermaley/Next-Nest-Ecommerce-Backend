@@ -1,15 +1,7 @@
-import {
-  BelongsTo,
-  Column,
-  DataType,
-  ForeignKey,
-  HasMany,
-  Model,
-  Table,
-} from 'sequelize-typescript';
-import { ApiProperty } from '@nestjs/swagger';
-import { User } from '../../users/users.model';
-import { Message } from './message.model';
+import {BelongsTo, Column, DataType, ForeignKey, HasMany, Model, Table,} from 'sequelize-typescript';
+import {ApiProperty} from '@nestjs/swagger';
+import {User} from '../../users/users.model';
+import {Message} from './message.model';
 
 export enum ConsultationType {
   Support = 'Support',

@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { DropZone, Label, Box } from '@adminjs/design-system';
-import { BasePropertyProps } from 'adminjs';
+import {Box, DropZone, Label} from '@adminjs/design-system';
+import {BasePropertyProps} from 'adminjs';
 
 const blobToBase64 = (blob) => {
   return new Promise((resolve) => {

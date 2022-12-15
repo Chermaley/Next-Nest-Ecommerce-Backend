@@ -9,6 +9,7 @@ import { AuthService } from '../auth/auth.service';
 import { FilesService } from '../files/files.service';
 import { locale } from './locale';
 import { ProductComment } from '../products/models/product-comments.model';
+import { Order } from '../order/models/order.model';
 
 export const configureAdmin = (
   authService: AuthService,
@@ -62,6 +63,7 @@ export const configureAdmin = (
       { resource: User },
       { resource: Role },
       { resource: ProductComment },
+      { resource: Order },
     ],
     locale,
   },

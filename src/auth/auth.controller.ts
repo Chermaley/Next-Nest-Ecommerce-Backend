@@ -1,19 +1,11 @@
-import {
-  Body,
-  Controller,
-  Post,
-  UseGuards,
-  HttpCode,
-  Response,
-  HttpStatus, UsePipes,
-} from "@nestjs/common";
-import { ApiTags } from '@nestjs/swagger';
-import { CreateUserDto } from '../users/dto/create-user.dto';
-import { AuthService } from './auth.service';
-import { GetCurrentUserId } from '../common/decorators';
-import { GetCurrentUser } from '../common/decorators/get-current-user-decorator';
-import { AtGuard, RtGuard } from '../common/guards';
-import { ValidationPipe } from "../common/pipes";
+import {Body, Controller, HttpCode, HttpStatus, Post, Response, UseGuards, UsePipes,} from "@nestjs/common";
+import {ApiTags} from '@nestjs/swagger';
+import {CreateUserDto} from '../users/dto/create-user.dto';
+import {AuthService} from './auth.service';
+import {GetCurrentUserId} from '../common/decorators';
+import {GetCurrentUser} from '../common/decorators/get-current-user-decorator';
+import {AtGuard, RtGuard} from '../common/guards';
+import {ValidationPipe} from "../common/pipes";
 
 @ApiTags('Авторизация')
 @Controller('auth')

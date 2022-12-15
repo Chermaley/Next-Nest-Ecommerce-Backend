@@ -1,17 +1,9 @@
-import {
-  BelongsToMany,
-  Column,
-  DataType, ForeignKey,
-  HasMany,
-  HasOne,
-  Model,
-  Table
-} from "sequelize-typescript";
-import { ApiProperty } from '@nestjs/swagger';
-import { UserRoles } from '../roles/user-roles.model';
-import { Role } from '../roles/roles.model';
-import { Basket } from '../basket/basket.model';
-import { Consultation } from '../chat/models/consultation.model';
+import {BelongsToMany, Column, DataType, ForeignKey, HasMany, HasOne, Model, Table} from "sequelize-typescript";
+import {ApiProperty} from '@nestjs/swagger';
+import {UserRoles} from '../roles/user-roles.model';
+import {Role} from '../roles/roles.model';
+import {Basket} from '../basket/basket.model';
+import {Consultation} from '../chat/models/consultation.model';
 
 interface UserCreationAttrs {
   email: string;

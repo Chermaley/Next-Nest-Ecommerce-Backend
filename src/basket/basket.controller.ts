@@ -32,10 +32,4 @@ export class BasketController {
   ) {
     return this.basketService.deleteFromBasket(userId, dto);
   }
-
-  @UseGuards(AtGuard)
-  @Post('order')
-  createOrder() {
-    return this.basketService.createOrder();
-  }
 }

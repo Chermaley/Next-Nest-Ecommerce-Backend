@@ -1,13 +1,13 @@
 import * as React from 'react';
-import { Socket } from 'socket.io-client';
-import { Box, Button, FormGroup, Text, TextArea } from '@adminjs/design-system';
-import { initialState } from '../state/chatReducer';
-import { Message } from '../../../../chat/models/message.model';
-import { setActiveConsultation } from '../state/actions-creators';
+import {Socket} from 'socket.io-client';
+import {Box, Button, FormGroup, Text, TextArea} from '@adminjs/design-system';
+import {initialState} from '../state/chatReducer';
+import {Message} from '../../../../chat/models/message.model';
+import {setActiveConsultation} from '../state/actions-creators';
 
-import { ChatEvent } from '../types/Event';
+import {ChatEvent} from '../types/Event';
 // import * as styled from 'styled-components';
-import  styled from 'styled-components';
+import styled from 'styled-components';
 
 type ChatProps = {
   socket: Socket;

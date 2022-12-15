@@ -1,10 +1,10 @@
 import {
   Controller,
+  Get,
   HttpCode,
   HttpStatus,
-  Get,
-  UseGuards,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { ConsultationService } from './services/consultation.service';

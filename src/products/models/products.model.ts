@@ -86,6 +86,15 @@ export class Product extends Model<Product, ProductCreationAttrs> {
   })
   image3: string;
 
+  @ApiProperty({
+    example: '4.5',
+    description: 'Оценка продукта.',
+  })
+  @Column({
+    type: DataType.FLOAT,
+  })
+  rating: number;
+
   @ForeignKey(() => ProductType)
   @Column({ type: DataType.INTEGER, allowNull: false })
   typeId: number;

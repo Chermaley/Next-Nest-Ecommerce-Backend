@@ -1,18 +1,14 @@
-import { Injectable } from '@nestjs/common';
-import { User } from '../../users/users.model';
-import { InjectModel } from '@nestjs/sequelize';
-import {
-  Consultation,
-  ConsultationStatus,
-  ConsultationType,
-} from '../models/consultation.model';
-import { Message } from '../models/message.model';
-import { ActiveConsultation } from '../models/active-consultation.model';
-import { JoinConsultationDto } from '../dto/join-consultation.dto';
-import { CreateMessageDto } from '../dto/create-message.dto';
-import { Role } from '../../roles/roles.model';
-import { MessageAttachment } from '../models/messageAttachment';
-import { CreateConsultationDto } from '../dto/create-consultation.dto';
+import {Injectable} from '@nestjs/common';
+import {User} from '../../users/users.model';
+import {InjectModel} from '@nestjs/sequelize';
+import {Consultation, ConsultationStatus, ConsultationType,} from '../models/consultation.model';
+import {Message} from '../models/message.model';
+import {ActiveConsultation} from '../models/active-consultation.model';
+import {JoinConsultationDto} from '../dto/join-consultation.dto';
+import {CreateMessageDto} from '../dto/create-message.dto';
+import {Role} from '../../roles/roles.model';
+import {MessageAttachment} from '../models/messageAttachment';
+import {CreateConsultationDto} from '../dto/create-consultation.dto';
 
 @Injectable()
 export class ConsultationService {
@@ -53,7 +49,7 @@ export class ConsultationService {
     };
     return this.consultationRepository.findAll({
       where: { status: ConsultationStatus.Closed },
-      order: ['updatedAt'],
+      order: [['updatedAt', 'DESC']],
       include,
       offset,
       limit,
@@ -103,19 +99,14 @@ export class ConsultationService {
     const activeConsultation = await this.activeConsultationRepository.findOne({
       where: { userId },
     });
-    if (!activeConsultation) {
-      return this.activeConsultationRepository.create({
-        consultationId,
-        userId,
-        socketId,
-      });
-    } else {
-      return activeConsultation.update({
-        consultationId,
-        userId,
-        socketId,
-      });
+    if (activeConsultation) {
+      await this.leaveConsultation(activeConsultation.socketId);
     }
+    return this.activeConsultationRepository.create({
+      consultationId,
+      userId,
+      socketId,
+    });
   }
 
   async closeConsultation(consultationId: number) {

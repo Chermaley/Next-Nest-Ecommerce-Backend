@@ -16,11 +16,7 @@ async function start() {
       ],
       methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
       credentials: true,
-      allowedHeaders: [
-        'Content-Type',
-        'X-Auth-Token',
-        'Authorization',
-      ],
+      allowedHeaders: ['Content-Type', 'X-Auth-Token', 'Authorization'],
     },
   });
 

@@ -1,8 +1,8 @@
 import * as React from 'react';
-import { Text, Box, Input, Button } from '@adminjs/design-system';
-import { Socket } from 'socket.io-client';
-import { Consultation } from '../../../../chat/models/consultation.model';
-import { initialState } from '../state/chatReducer';
+import {Box, Button, Input, Text} from '@adminjs/design-system';
+import {Socket} from 'socket.io-client';
+import {Consultation} from '../../../../chat/models/consultation.model';
+import {initialState} from '../state/chatReducer';
 import {
   setActiveConsultation,
   setClosedConsultations,
@@ -10,7 +10,7 @@ import {
   setIsConsultationsFetching,
   setIsConsultationsPagesEndReached,
 } from '../state/actions-creators';
-import { ChatEvent } from '../types/Event';
+import {ChatEvent} from '../types/Event';
 
 type ChatListProps = {
   socket: Socket;

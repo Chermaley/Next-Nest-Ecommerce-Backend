@@ -12,6 +12,7 @@ export const locale: Locale = {
       Users: 'Пользователи',
       Roles: 'Роли',
       ProductComments: 'Комментарии',
+      Orders: 'Заказы',
     },
     buttons: {
       filter: 'Фильтр',

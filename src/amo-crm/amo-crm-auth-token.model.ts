@@ -1,5 +1,5 @@
-import { Column, DataType, Model, Table } from 'sequelize-typescript';
-import { ApiProperty } from '@nestjs/swagger';
+import {Column, DataType, Model, Table} from 'sequelize-typescript';
+import {ApiProperty} from '@nestjs/swagger';
 
 @Table({ updatedAt: false, createdAt: false })
 export class AmoCrmAuthToken extends Model<AmoCrmAuthToken> {

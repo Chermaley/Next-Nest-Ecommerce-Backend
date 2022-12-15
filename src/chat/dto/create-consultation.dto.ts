@@ -1,4 +1,4 @@
-import { ConsultationType } from '../models/consultation.model';
+import {ConsultationType} from '../models/consultation.model';
 
 export class CreateConsultationDto {
   readonly type: ConsultationType;

@@ -1,16 +1,16 @@
 import {
-  CanActivate,
-  ExecutionContext,
-  HttpException,
-  HttpStatus,
-  Injectable,
-  mixin,
-  Type,
-  UnauthorizedException,
+    CanActivate,
+    ExecutionContext,
+    HttpException,
+    HttpStatus,
+    Injectable,
+    mixin,
+    Type,
+    UnauthorizedException,
 } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
-import { Observable } from 'rxjs';
-import { Socket } from 'socket.io';
+import {JwtService} from '@nestjs/jwt';
+import {Observable} from 'rxjs';
+import {Socket} from 'socket.io';
 
 export const RolesGuard = (requiredRoles: string[]): Type<CanActivate> => {
   @Injectable()
