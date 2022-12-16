@@ -34,6 +34,15 @@ export class OrderService {
   getOrders(userId: number) {
     return this.orderRepository.findAll({
       where: { userId },
+      order: [['id', 'DESC']],
+      include: {
+        all: true,
+      },
+    });
+  }
+
+  getOrder(id: number) {
+    return this.orderRepository.findByPk(id, {
       include: {
         all: true,
       },
