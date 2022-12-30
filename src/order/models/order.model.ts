@@ -47,6 +47,16 @@ export class Order extends Model<Order> {
   })
   amount: number;
 
+  @Column({
+    type: DataType.STRING,
+  })
+  phone: string;
+
+  @Column({
+    type: DataType.STRING,
+  })
+  address: string;
+
   @HasMany(() => BasketProduct)
   products: BasketProduct[];
 }

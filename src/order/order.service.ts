@@ -12,8 +12,8 @@ export class OrderService {
     @InjectModel(Basket) private basketRepository: typeof Basket,
   ) {}
 
-  async createOrder({ basketId, userId }: CreateOrderDto) {
-    const basket = await this.basketRepository.findByPk(basketId, {
+  async createOrder(dto: CreateOrderDto, userId: number) {
+    const basket = await this.basketRepository.findByPk(dto.basketId, {
       include: {
         model: BasketProduct,
       },
@@ -22,10 +22,7 @@ export class OrderService {
       (acc, item) => acc + item.price * item.quantity,
       0,
     );
-    const order = await this.orderRepository.create({
-      userId,
-      amount,
-    });
+    const order = await this.orderRepository.create({ amount, userId, ...dto });
     await order.$set('products', basket.products);
     await basket.$set('products', []);
     return order;

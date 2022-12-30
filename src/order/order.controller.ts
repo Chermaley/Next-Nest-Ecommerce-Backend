@@ -2,8 +2,7 @@ import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
 import { AtGuard } from '../common/guards';
 import { OrderService } from './order.service';
 import { GetCurrentUserId } from '../common/decorators';
-import { ApiOperation, ApiResponse } from '@nestjs/swagger';
-import { Product } from '../products/models/products.model';
+import { CreateOrderDto } from './dto/create-order.dto';
 
 @Controller('order')
 export class OrderController {
@@ -22,10 +21,7 @@ export class OrderController {
 
   @UseGuards(AtGuard)
   @Post()
-  createOrder(
-    @Body() dto: { basketId: number },
-    @GetCurrentUserId() userId: number,
-  ) {
-    return this.orderService.createOrder({ ...dto, userId });
+  createOrder(@Body() dto: CreateOrderDto, @GetCurrentUserId() userId: number) {
+    return this.orderService.createOrder(dto, userId);
   }
 }
